@@ -31,8 +31,8 @@ public class Address implements Serializable {
     @Column(name = "apartment_number")
     private Integer apartmentNumber;
 
-    @Column(name = "postcode", nullable = false)
-    private Integer postCode;
+    @Column(name = "postcode", nullable = false, length = 10)
+    private String postCode;
 
     @Column(name = "city", nullable = false, length = 30)
     private String city;
@@ -42,6 +42,5 @@ public class Address implements Serializable {
 
     @Column(name = "country", nullable = false, length = 30)
     private String country;
-
 
 }

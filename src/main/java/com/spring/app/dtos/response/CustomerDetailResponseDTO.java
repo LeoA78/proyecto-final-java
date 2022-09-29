@@ -20,7 +20,7 @@ public class CustomerDetailResponseDTO implements Serializable {
 
     private Long idCustomerDetail;
 
-    @ApiModelProperty(position = 1, notes = "Non negative value, VIP is required.")
+    @ApiModelProperty(position = 1, notes = "Non null value, VIP is required.")
     private Boolean vip;
 
     @ApiModelProperty(position = 2, notes = "Non negative value, Credits are optional")

@@ -19,7 +19,7 @@ import java.io.Serializable;
 )
 public class CustomerDetailDTO implements Serializable {
 
-    @ApiModelProperty(position = 1, required = true, notes = "Non negative value, VIP is required.")
+    @ApiModelProperty(position = 1, required = true, notes = "Non null value, VIP is required.")
     @NotNull
     private Boolean vip;
 

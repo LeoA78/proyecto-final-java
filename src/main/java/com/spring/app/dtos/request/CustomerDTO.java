@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -18,19 +19,23 @@ import java.io.Serializable;
 )
 public class CustomerDTO implements Serializable {
 
-    @ApiModelProperty(position = 1, required = true, notes = "Non negative value, The first name is required.")
+    @ApiModelProperty(position = 1, required = true, notes = "The first name is required.")
     @NotNull
     private String name;
 
-    @ApiModelProperty(position = 2, required = true, notes = "Non negative value, The last name is required.")
+    @ApiModelProperty(position = 2, required = true, notes = "he last name is required.")
     @NotNull
     private String lastName;
 
-    @ApiModelProperty(position = 3, required = true, notes = "Non negative value, DNI is required.")
+    @ApiModelProperty(position = 3, required = true, notes = "DNI is required.")
     @NotNull
     private String dni;
 
-    @ApiModelProperty(position = 4, required = true, notes = "Non negative value, age is required.")
+    @ApiModelProperty(position = 4, required = true, notes = "Non negative value, Date of Birth is required.")
     @NotNull
-    private Integer age;
+    private LocalDate dateOfBirth;
+
+    @ApiModelProperty(position = 5, required = true, notes = "Non negative value, Creation Date is required.")
+    @NotNull
+    private LocalDate createdDate;
 }

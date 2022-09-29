@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -22,7 +19,7 @@ import java.io.Serializable;
 )
 public class AddressDTO implements Serializable {
 
-    @ApiModelProperty(position = 1, required = true, notes = "Non negative value, The street name is required.")
+    @ApiModelProperty(position = 1, required = true, notes = "The street name is required.")
     @NotNull
     private String street;
 
@@ -30,25 +27,25 @@ public class AddressDTO implements Serializable {
     @NotNull
     private Integer number;
 
-    @ApiModelProperty(position = 3, notes = "Non negative value, The apartment is optional.")
+    @ApiModelProperty(position = 3, notes = "The apartment is optional.")
     private String apartment;
 
     @ApiModelProperty(position = 4, notes = "Non negative value, The apartment number is optional.")
     private Integer apartmentNumber;
 
-    @ApiModelProperty(position = 5, required = true, notes = "Non negative value, The postal code is required.")
+    @ApiModelProperty(position = 5, required = true, notes = "The postal code is required.")
     @NotNull
-    private Integer postCode;
+    private String postCode;
 
-    @ApiModelProperty(position = 6, required = true, notes = "Non negative value, The city is required.")
+    @ApiModelProperty(position = 6, required = true, notes = "The city is required.")
     @NotNull
     private String city;
 
-    @ApiModelProperty(position = 7, required = true, notes = "Non negative value, The province is required.")
+    @ApiModelProperty(position = 7, required = true, notes = "The province is required.")
     @NotNull
     private String province;
 
-    @ApiModelProperty(position = 8, required = true, notes = "Non negative value, The country is required.")
+    @ApiModelProperty(position = 8, required = true, notes = "The country is required.")
     @NotNull
     private String country;
 
