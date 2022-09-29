@@ -1,28 +1,29 @@
 package com.spring.app.mappers.impl;
 
+import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
-import com.spring.app.entities.AddressEntity;
-import com.spring.app.mappers.IMapper;
+import com.spring.app.entities.Address;
+import com.spring.app.mappers.IAddressMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class AddressMapperImpl extends Exception implements IMapper {
+public class AddressMapperImpl extends Exception implements IAddressMapper {
     private final ModelMapper modelMapper;
 
     @Override
-    public AddressResponseDTO entityToResponseDto(Object addressEntity) {
-        AddressResponseDTO personResponseDTO = new AddressResponseDTO();
-        modelMapper.map(addressEntity, personResponseDTO);
-        return personResponseDTO;
+    public AddressResponseDTO entityToResponseDto(Address address) {
+        AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
+        modelMapper.map(address, addressResponseDTO);
+        return addressResponseDTO;
     }
 
     @Override
-    public AddressEntity requestDtoToEntity(Object requestDto) {
-        AddressEntity addressEntity = new AddressEntity();
-        modelMapper.map(requestDto, addressEntity);
-        return addressEntity;
+    public Address requestDtoToEntity(AddressDTO requestDto) {
+        Address address = new Address();
+        modelMapper.map(requestDto, address);
+        return address;
     }
 }
