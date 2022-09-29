@@ -1,9 +1,12 @@
 package com.spring.app.entities;
 
+import ch.qos.logback.classic.db.names.ColumnName;
 import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 
 @NoArgsConstructor
@@ -36,10 +39,19 @@ public class Customer implements Serializable {
     @Column(name = "createdDate", nullable = false)
     private LocalDate createdDate;
 
+    @OneToOne
+    @JoinColumn(name = "customer_detail_id")
+    private CustomerDetail customerDetail;
 
+    @ManyToMany
+    @JoinTable(name = "tbl_customer_address",
+        joinColumns = @JoinColumn(name = "customer_id"),
+        inverseJoinColumns = @JoinColumn(name = "address_id")
+    )
+    private List<Address> addressList = new ArrayList<>();
 
-    // private Address address;
-    // private CustomerDetail customerDetail;
+    @OneToMany(mappedBy = "customer")
+    private List<Invoice> invoiceList = new ArrayList<>();
 
 
 }

@@ -30,6 +30,8 @@ public class Invoice implements Serializable {
 
     @Column(name = "createdDate", nullable = false)
     private LocalDate createdDate;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-    // private Customer customer;
 }

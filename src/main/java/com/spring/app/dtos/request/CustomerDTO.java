@@ -35,7 +35,4 @@ public class CustomerDTO implements Serializable {
     @NotNull
     private LocalDate dateOfBirth;
 
-    @ApiModelProperty(position = 5, required = true, notes = "Non negative value, Creation Date is required.")
-    @NotNull
-    private LocalDate createdDate;
 }

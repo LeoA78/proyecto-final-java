@@ -4,6 +4,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,5 +44,8 @@ public class Address implements Serializable {
 
     @Column(name = "country", nullable = false, length = 30)
     private String country;
+
+    @ManyToMany(mappedBy = "addressList")
+    private List<Customer> customerList = new ArrayList<>();
 
 }

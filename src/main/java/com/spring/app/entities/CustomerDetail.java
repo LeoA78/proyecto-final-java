@@ -24,4 +24,8 @@ public class CustomerDetail implements Serializable {
     @Column(name = "credits", nullable = false)
     private Integer credits;
 
+    @OneToOne(mappedBy = "customerDetail")
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
 }
