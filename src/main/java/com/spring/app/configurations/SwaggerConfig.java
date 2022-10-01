@@ -14,7 +14,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @EnableWebMvc
-
 public class SwaggerConfig extends WebMvcConfigurerAdapter {
     @Bean
     public Docket api() {
@@ -22,7 +21,7 @@ public class SwaggerConfig extends WebMvcConfigurerAdapter {
                 .select()
                 .apis(
                         RequestHandlerSelectors
-                                .basePackage("com.spring.app.controller"))
+                                .basePackage("com.spring.app.controllers"))
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();

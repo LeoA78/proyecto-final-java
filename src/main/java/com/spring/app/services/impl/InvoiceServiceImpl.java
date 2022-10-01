@@ -6,7 +6,6 @@ import com.spring.app.mappers.IInvoiceMapper;
 import com.spring.app.repositories.IInvoiceRepository;
 import com.spring.app.services.IInvoiceService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @AllArgsConstructor
-@Service //Para que pueda ser inyectado desde otro lugar
-@Slf4j
-@Transactional //Hace el trabajo de JPA (commit - begin - rollback - etc)
-public class InvoiceServiceImpl extends Exception implements IInvoiceService {
+@Service
+@Transactional
+public class InvoiceServiceImpl implements IInvoiceService {
 
     @Autowired
     private IInvoiceRepository invoiceRepository;

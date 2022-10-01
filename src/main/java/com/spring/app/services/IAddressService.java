@@ -13,8 +13,7 @@ public interface IAddressService {
     AddressResponseDTO findAddressById(Long id);
 
     AddressResponseDTO addAddress(AddressDTO addressDTO);
-
-    AddressResponseDTO updateAddress(AddressDTO addressDTO);
+    AddressResponseDTO updateAddress(Long id, AddressDTO addressDTO);
 
     void deleteAddressById(Long id);
 }
