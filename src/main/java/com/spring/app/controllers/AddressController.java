@@ -62,6 +62,7 @@ public class AddressController {
 
         AddressResponseDTO addressResponseDTO = addressService.findAddressById(id);
 
+
         return new ResponseEntity<>(addressResponseDTO,HttpStatus.OK);
     }
 

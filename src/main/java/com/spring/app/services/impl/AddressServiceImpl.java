@@ -3,6 +3,7 @@ package com.spring.app.services.impl;
 import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.entities.Address;
+import com.spring.app.exceptions.NotFoundException;
 import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.repositories.IAddressRepository;
 import com.spring.app.services.IAddressService;
@@ -44,6 +45,10 @@ public class AddressServiceImpl implements IAddressService {
         AddressResponseDTO addressResponseDTO;
 
         Optional<Address> optionalAddress = addressRepository.findById(id);
+
+        if(optionalAddress.isEmpty()){
+            throw new IllegalStateException("El registro con el id " + id + " no existe.");
+        }
 
         addressResponseDTO = addressMapper.entityToResponseDto(optionalAddress.get());
 
