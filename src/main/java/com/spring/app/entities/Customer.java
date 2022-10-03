@@ -16,7 +16,7 @@ import javax.persistence.Entity;
 @ToString
 @Builder
 @Entity
-@Table(name = "customer") //AGREGAR QUE NO SE REPITA DNI
+@Table(name = "customers") //AGREGAR QUE NO SE REPITA DNI
 public class Customer implements Serializable {
 
     @Id
@@ -44,7 +44,7 @@ public class Customer implements Serializable {
     private CustomerDetail customerDetail;
 
     @ManyToMany
-    @JoinTable(name = "tbl_customer_address",
+    @JoinTable(name = "tbl_customers_addresses",
         joinColumns = @JoinColumn(name = "customer_id"),
         inverseJoinColumns = @JoinColumn(name = "address_id")
     )

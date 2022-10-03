@@ -1,6 +1,9 @@
 package com.spring.app.entities;
 
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.io.Serializable;
@@ -14,7 +17,9 @@ import java.util.List;
 @ToString
 @Builder
 @Entity
-@Table(name = "address")
+@SQLDelete(sql = "UPDATE addresses SET deleted = true WHERE id_address=?")
+@Where(clause = "deleted=false")
+@Table(name = "addresses")
 public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +35,6 @@ public class Address implements Serializable {
     @Column(name = "apartment", length = 10)
     private String apartment;
 
-    @Column(name = "apartment_number")
-    private Integer apartmentNumber;
-
     @Column(name = "postcode", nullable = false, length = 10)
     private String postCode;
 
@@ -44,6 +46,9 @@ public class Address implements Serializable {
 
     @Column(name = "country", nullable = false, length = 30)
     private String country;
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
 
     @ManyToMany(mappedBy = "addressList")
     private List<Customer> customerList = new ArrayList<>();

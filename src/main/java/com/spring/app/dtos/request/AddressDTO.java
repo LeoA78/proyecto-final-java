@@ -30,22 +30,19 @@ public class AddressDTO implements Serializable {
     @ApiModelProperty(position = 3, notes = "The apartment is optional.")
     private String apartment;
 
-    @ApiModelProperty(position = 4, notes = "Non negative value, The apartment number is optional.")
-    private Integer apartmentNumber;
-
-    @ApiModelProperty(position = 5, required = true, notes = "The postal code is required.")
+    @ApiModelProperty(position = 4, required = true, notes = "The postal code is required.")
     @NotNull
     private String postCode;
 
-    @ApiModelProperty(position = 6, required = true, notes = "The city is required.")
+    @ApiModelProperty(position = 5, required = true, notes = "The city is required.")
     @NotNull
     private String city;
 
-    @ApiModelProperty(position = 7, required = true, notes = "The province is required.")
+    @ApiModelProperty(position = 6, required = true, notes = "The province is required.")
     @NotNull
     private String province;
 
-    @ApiModelProperty(position = 8, required = true, notes = "The country is required.")
+    @ApiModelProperty(position = 7, required = true, notes = "The country is required.")
     @NotNull
     private String country;
 

@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @ToString
 @Builder
 @Entity
-@Table(name = "invoice")
+@Table(name = "invoices")
 public class Invoice implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

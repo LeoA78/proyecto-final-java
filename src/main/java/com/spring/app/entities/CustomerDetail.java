@@ -11,7 +11,7 @@ import java.io.Serializable;
 @ToString
 @Builder
 @Entity
-@Table(name = "customer_detail")
+@Table(name = "customer_details")
 public class CustomerDetail implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

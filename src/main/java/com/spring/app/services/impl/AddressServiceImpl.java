@@ -3,6 +3,7 @@ package com.spring.app.services.impl;
 import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.entities.Address;
+import com.spring.app.exceptions.BadRequestException;
 import com.spring.app.exceptions.NotFoundException;
 import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.repositories.IAddressRepository;
@@ -42,9 +43,16 @@ public class AddressServiceImpl implements IAddressService {
 
     @Override
     public AddressResponseDTO findAddressById(Long id){
+
+        if(id < 0){
+            throw new BadRequestException("El id no puede ser un número negativo.");
+        }
+
         AddressResponseDTO addressResponseDTO;
 
         Optional<Address> optionalAddress = addressRepository.findById(id);
+
+
 
         if(optionalAddress.isEmpty()){
             throw new IllegalStateException("El registro con el id " + id + " no existe.");
@@ -58,6 +66,18 @@ public class AddressServiceImpl implements IAddressService {
     @Override
     public AddressResponseDTO addAddress(AddressDTO addressDTO){
         AddressResponseDTO addressResponseDTO;
+
+
+        long repeatedAddress = addressRepository.repeatedAddressValidation(
+                addressDTO.getStreet(),
+                addressDTO.getNumber(),
+                addressDTO.getApartment(),
+                addressDTO.getCity()
+        );
+
+        if (repeatedAddress > 0) {
+            throw new BadRequestException("Existing address");
+        }
 
         Address addressEntity = addressMapper.requestDtoToEntity(addressDTO);
 
