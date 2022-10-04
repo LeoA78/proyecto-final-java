@@ -44,7 +44,7 @@ public class Customer implements Serializable {
     @Column(name = "createdDate", nullable = false)
     private LocalDate createdDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_detail_id")
     private CustomerDetail customerDetail;
 

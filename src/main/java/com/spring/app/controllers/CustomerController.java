@@ -2,7 +2,10 @@ package com.spring.app.controllers;
 
 
 import com.spring.app.dtos.request.CustomerDTO;
+import com.spring.app.dtos.request.CustomerDetailDTO;
+import com.spring.app.dtos.request.CustomerWithDetailDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
+import com.spring.app.dtos.response.CustomerWithDetailResponseDTO;
 import com.spring.app.services.ICustomerService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -64,7 +68,7 @@ public class CustomerController {
         CustomerResponseDTO customerResponseDTO = customerService.findCustomerById(id);
 
 
-        return new ResponseEntity<>(customerResponseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{id}")
@@ -112,6 +116,28 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.addCustomer(customer), HttpStatus.CREATED);
     }
 
+    @PostMapping(value = "/addWithDetail", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(
+            value = "Retrieves data associated to List Master by Id",
+            httpMethod = "POST",
+            response = CustomerWithDetailResponseDTO.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 201,
+                    message = "Body content with basic information for this Lists Master by Id"
+            ),
+            @ApiResponse(
+                    code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+    })
+    public ResponseEntity<CustomerWithDetailResponseDTO> addCustomerWithDetail(
+            @ApiParam(name = "customer", required = true, value = "Customer")
+            @Valid @RequestBody CustomerWithDetailDTO customerWithDetailDTO){
+
+        return new ResponseEntity<>(customerService.addCustomerWithDetail(customerWithDetailDTO), HttpStatus.CREATED);
+    }
+
     @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
             value = "Retrieves data associated to List Master by Id",
@@ -131,9 +157,9 @@ public class CustomerController {
             @ApiParam(name = "customer", required = true, value = "Customer")
             @RequestBody CustomerDTO customer,
             @ApiParam(name = "id", required = true, value = "Id", example = "1")
-            @PathVariable("id") Long id){
+            @PathVariable("id") Long id) {
 
-        return new ResponseEntity<>(customerService.updateCustomer(id,customer), HttpStatus.CREATED);
+        return new ResponseEntity<>(customerService.updateCustomer(id, customer), HttpStatus.CREATED);
     }
 
 }
