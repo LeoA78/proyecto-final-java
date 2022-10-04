@@ -136,7 +136,6 @@ public class CustomerServiceImpl implements ICustomerService {
      * This method delete a customer in to the database.
      *
      * @param id Customer id
-     * @return void
      */
     @Override
     public void deleteCustomerById(Long id) {
@@ -147,7 +146,7 @@ public class CustomerServiceImpl implements ICustomerService {
         }
 
         customerRepository.delete(optionalCustomer.get());
-        System.out.println("La dirección con el " + id + " fue eliminada correctamente.");
+        System.out.println("El cliente con el " + id + " fue eliminada correctamente.");
 
     }
 

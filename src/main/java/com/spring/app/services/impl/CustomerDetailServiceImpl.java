@@ -121,7 +121,6 @@ public class CustomerDetailServiceImpl implements ICustomerDetailService {
      * This method delete a customerDetail in to the database.
      *
      * @param id CustomerDetail id
-     * @return void
      */
     @Override
     public void deleteCustomerDetailById(Long id) {
@@ -132,7 +131,7 @@ public class CustomerDetailServiceImpl implements ICustomerDetailService {
         }
 
         customerDetailRepository.delete(optionalCustomerDetail.get());
-        System.out.println("La dirección con el " + id + " fue eliminada correctamente.");
+        System.out.println("El detalle de cliente con el " + id + " fue eliminada correctamente.");
 
     }
 

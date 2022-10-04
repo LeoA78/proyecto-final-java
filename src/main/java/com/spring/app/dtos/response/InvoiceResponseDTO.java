@@ -1,5 +1,6 @@
 package com.spring.app.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -32,6 +33,7 @@ public class InvoiceResponseDTO implements Serializable {
     private Double total;
 
     @ApiModelProperty(position = 4, notes = "Non negative value, Creation Date is required.")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
 
 }

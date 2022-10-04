@@ -1,6 +1,9 @@
 package com.spring.app.entities;
 
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -12,6 +15,8 @@ import java.time.LocalDate;
 @ToString
 @Builder
 @Entity
+@SQLDelete(sql = "UPDATE invoices SET deleted = true WHERE id_invoice=?")
+@Where(clause = "deleted=false")
 @Table(name = "invoices")
 public class Invoice implements Serializable {
     @Id
@@ -30,6 +35,10 @@ public class Invoice implements Serializable {
 
     @Column(name = "createdDate", nullable = false)
     private LocalDate createdDate;
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

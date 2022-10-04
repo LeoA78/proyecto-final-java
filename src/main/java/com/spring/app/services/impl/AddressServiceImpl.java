@@ -126,7 +126,6 @@ public class AddressServiceImpl implements IAddressService {
     /**
      * This method delete an address in to the database.
      * @param id Address id
-     * @return void
      */
     @Override
     public void deleteAddressById(Long id){

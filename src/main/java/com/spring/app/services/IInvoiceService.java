@@ -12,7 +12,7 @@ public interface IInvoiceService {
 
     InvoiceResponseDTO addInvoice(InvoiceDTO invoiceDTO);
 
-    InvoiceResponseDTO updateInvoice(InvoiceDTO invoiceDTO);
+    InvoiceResponseDTO updateInvoice(Long id, InvoiceDTO invoiceDTO);
 
     void deleteInvoiceById(Long id);
 }
