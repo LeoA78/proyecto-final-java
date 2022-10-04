@@ -6,13 +6,13 @@ import com.spring.app.dtos.response.CustomerDetailResponseDTO;
 import java.util.List;
 
 public interface ICustomerDetailService {
-    List<CustomerDetailResponseDTO> findAllCustomersDetails();
+    List<CustomerDetailResponseDTO> findAllCustomerDetails();
 
     CustomerDetailResponseDTO findCustomerDetailById(Long id);
 
     CustomerDetailResponseDTO addCustomerDetail(CustomerDetailDTO customerDetailDTO);
 
-    CustomerDetailResponseDTO updateCustomerDetail(CustomerDetailDTO customerDetailDTO);
+    CustomerDetailResponseDTO updateCustomerDetail(Long id, CustomerDetailDTO customerDetailDTO);
 
     void deleteCustomerDetailById(Long id);
 }
