@@ -12,7 +12,7 @@ public interface ICustomerService {
 
     CustomerResponseDTO addCustomer(CustomerDTO customerDTO);
 
-    CustomerResponseDTO updateCustomer(CustomerDTO customerDTO);
+    CustomerResponseDTO updateCustomer(Long id, CustomerDTO customerDTO);
 
     void deleteCustomerById(Long id);
 }

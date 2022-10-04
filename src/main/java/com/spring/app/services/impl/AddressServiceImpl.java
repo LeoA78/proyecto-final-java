@@ -4,7 +4,6 @@ import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.exceptions.BadRequestException;
-import com.spring.app.exceptions.NotFoundException;
 import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.repositories.IAddressRepository;
 import com.spring.app.services.IAddressService;
@@ -28,6 +27,10 @@ public class AddressServiceImpl implements IAddressService {
     @Autowired
     private IAddressMapper addressMapper;
 
+    /**
+     * This method return all addresses
+     * @return List<AddressResponseDTO>
+     */
     @Override
     public List<AddressResponseDTO> findAllAddresses(){
         List<AddressResponseDTO> addressResponseDTOS = new ArrayList<>();
@@ -41,6 +44,11 @@ public class AddressServiceImpl implements IAddressService {
         return addressResponseDTOS;
     }
 
+    /**
+     * This method return one address
+     * @param id
+     * @return AddressResponseDTO
+     */
     @Override
     public AddressResponseDTO findAddressById(Long id){
 
@@ -52,8 +60,6 @@ public class AddressServiceImpl implements IAddressService {
 
         Optional<Address> optionalAddress = addressRepository.findById(id);
 
-
-
         if(optionalAddress.isEmpty()){
             throw new IllegalStateException("El registro con el id " + id + " no existe.");
         }
@@ -63,6 +69,11 @@ public class AddressServiceImpl implements IAddressService {
         return addressResponseDTO;
     }
 
+    /**
+     * This method adds an address to the database and returns the added address.
+     * @param addressDTO Address Request DTO
+     * @return AddressResponseDTO
+     */
     @Override
     public AddressResponseDTO addAddress(AddressDTO addressDTO){
         AddressResponseDTO addressResponseDTO;
@@ -88,6 +99,12 @@ public class AddressServiceImpl implements IAddressService {
         return addressResponseDTO;
     }
 
+    /**
+     * This method update an address in to the database and returns the modified address.
+     * @param id Address id
+     * @param addressDTO Address Request DTO
+     * @return AddressResponseDTO
+     */
     @Override
     public AddressResponseDTO updateAddress(Long id, AddressDTO addressDTO){
 
@@ -106,6 +123,11 @@ public class AddressServiceImpl implements IAddressService {
         return addressMapper.entityToResponseDto(updatedAddress);
     }
 
+    /**
+     * This method delete an address in to the database.
+     * @param id Address id
+     * @return void
+     */
     @Override
     public void deleteAddressById(Long id){
         Optional<Address> optionalAddress = addressRepository.findById(id);
@@ -118,7 +140,5 @@ public class AddressServiceImpl implements IAddressService {
         System.out.println("La dirección con el " + id + " fue eliminada correctamente.");
 
     }
-
-
 
 }

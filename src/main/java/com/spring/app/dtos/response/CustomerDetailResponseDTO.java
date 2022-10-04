@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Builder
 @Setter
 @ApiModel(
-        value = "CustomerDetailDTO",
+        value = "CustomerDetailResponseDTO",
         description = "Represents the data needed to created Customer Detail"
 )
 public class CustomerDetailResponseDTO implements Serializable {

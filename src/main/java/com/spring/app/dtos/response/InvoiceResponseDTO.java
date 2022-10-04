@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Builder
 @Setter
 @ApiModel(
-        value = "InvoiceDTO",
+        value = "InvoiceResponseDTO",
         description = "Represents the data needed to created Invoice"
 )
 public class InvoiceResponseDTO implements Serializable {

@@ -1,10 +1,11 @@
 package com.spring.app.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @Builder
 @Setter
 @ApiModel(
-        value = "CustomerDTO",
+        value = "CustomerResponseDTO",
         description = "Represents the data needed to created Customer"
 )
 public class CustomerResponseDTO implements Serializable {
@@ -32,8 +33,10 @@ public class CustomerResponseDTO implements Serializable {
     private String dni;
 
     @ApiModelProperty(position = 4, required = true, notes = "Non negative value, Date of Birth is required.")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     @ApiModelProperty(position = 5, notes = "Non negative value, Creation Date is required.")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
 }

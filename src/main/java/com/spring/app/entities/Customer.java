@@ -2,6 +2,9 @@ package com.spring.app.entities;
 
 import ch.qos.logback.classic.db.names.ColumnName;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -16,6 +19,8 @@ import javax.persistence.Entity;
 @ToString
 @Builder
 @Entity
+@SQLDelete(sql = "UPDATE customers SET deleted = true WHERE id_customer=?")
+@Where(clause = "deleted=false")
 @Table(name = "customers") //AGREGAR QUE NO SE REPITA DNI
 public class Customer implements Serializable {
 
@@ -42,6 +47,9 @@ public class Customer implements Serializable {
     @OneToOne
     @JoinColumn(name = "customer_detail_id")
     private CustomerDetail customerDetail;
+
+    @Column(name = "deleted", nullable = false)
+    private boolean deleted = false;
 
     @ManyToMany
     @JoinTable(name = "tbl_customers_addresses",

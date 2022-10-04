@@ -136,5 +136,4 @@ public class AddressController {
         return new ResponseEntity<>(addressService.updateAddress(id,address), HttpStatus.CREATED);
     }
 
-
 }
