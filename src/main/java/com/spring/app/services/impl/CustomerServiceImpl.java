@@ -1,5 +1,6 @@
 package com.spring.app.services.impl;
 
+import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.request.CustomerDTO;
 import com.spring.app.dtos.request.FullCustomerDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
@@ -11,6 +12,7 @@ import com.spring.app.exceptions.BadRequestException;
 import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.mappers.ICustomerDetailMapper;
 import com.spring.app.mappers.ICustomerMapper;
+import com.spring.app.repositories.IAddressRepository;
 import com.spring.app.repositories.ICustomerRepository;
 import com.spring.app.services.ICustomerService;
 import lombok.AllArgsConstructor;
@@ -40,6 +42,9 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Autowired
     private IAddressMapper addressMapper;
+
+    @Autowired
+    private IAddressRepository addressRepository;
 
     /**
      * This method return all customers
@@ -105,13 +110,34 @@ public class CustomerServiceImpl implements ICustomerService {
             throw new BadRequestException("the client with the DNI entered already exists");
         }
 
+        AddressDTO addressDTO = fullCustomerDTO.getAddressDTO();
+
+
+
         Customer customerToCreate = customerMapper.requestDtoToEntity(fullCustomerDTO.getCustomer());
         CustomerDetail customerDetail = customerDetailMapper.requestDtoToEntity(fullCustomerDTO.getDetail());
+
         Address address = addressMapper.requestDtoToEntity(fullCustomerDTO.getAddressDTO());
 
         customerToCreate.setCreatedDate(LocalDate.now());
         customerToCreate.setCustomerDetail(customerDetail);
-        customerToCreate.addAddress(address);
+
+        Optional<Address> repeatedAddress = addressRepository.repeatedAddressValidation(
+                address.getStreet(),
+                address.getNumber(),
+                address.getApartment(),
+                address.getPostCode(),
+                address.getCity(),
+                address.getProvince(),
+                address.getCountry()
+        );
+
+        if(repeatedAddress.isPresent()){
+            customerToCreate.addAddress(repeatedAddress.get());
+        }else{
+            customerToCreate.addAddress(address);
+        }
+
 
         Customer customerCreated = customerRepository.save(customerToCreate);
 

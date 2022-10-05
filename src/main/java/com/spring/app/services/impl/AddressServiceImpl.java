@@ -78,18 +78,21 @@ public class AddressServiceImpl implements IAddressService {
     public AddressResponseDTO addAddress(AddressDTO addressDTO){
         AddressResponseDTO addressResponseDTO;
 
-
-        long repeatedAddress = addressRepository.repeatedAddressValidation(
+/*
+        Optional<Address>  address = addressRepository.repeatedAddressValidation(
                 addressDTO.getStreet(),
                 addressDTO.getNumber(),
                 addressDTO.getApartment(),
-                addressDTO.getCity()
+                addressDTO.getPostCode(),
+                addressDTO.getCity(),
+                addressDTO.getProvince(),
+                addressDTO.getCountry()
         );
 
-        if (repeatedAddress > 0) {
+        if (address.isPresent()) {
             throw new BadRequestException("Existing address");
         }
-
+*/
         Address addressEntity = addressMapper.requestDtoToEntity(addressDTO);
 
         Address savedAddress = addressRepository.save(addressEntity);

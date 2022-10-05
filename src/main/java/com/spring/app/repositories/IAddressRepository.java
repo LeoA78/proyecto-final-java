@@ -5,18 +5,27 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface IAddressRepository extends JpaRepository<Address, Long> {
 
-    @Query("Select count(A) from Address A " +
+    @Query("Select A from Address A " +
             "where (A.street = :street) AND " +
             "(A.number = :number) AND " +
             "(A.apartment = :apartment) AND " +
-            "(A.city = :city)")
-    long repeatedAddressValidation(
+            "(A.postCode = :postCode) AND "+
+            "(A.city = :city) AND " +
+            "(A.province = :province) AND" +
+            "(A.country = :country)")
+    Optional<Address> repeatedAddressValidation(
             @Param("street") String street,
             @Param("number") String number,
             @Param("apartment") String apartment,
-            @Param("city") String city);
+            @Param("postCode") String postCode,
+            @Param("city") String city,
+            @Param("province") String province,
+            @Param("country") String country);
+
 
 
 }

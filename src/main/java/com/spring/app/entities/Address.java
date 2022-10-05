@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Builder
 @Entity
 @SQLDelete(sql = "UPDATE addresses SET deleted = true WHERE id_address=?")

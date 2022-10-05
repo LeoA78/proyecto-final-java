@@ -31,6 +31,6 @@ public class FullCustomerDTO implements Serializable {
     @ApiModelProperty(position = 3, required = true, notes = "Address is required.")
     @NotNull
     @NotEmpty
-    private AddressDTO addressDTO;
+    private AddressDTO address;
 
 }
