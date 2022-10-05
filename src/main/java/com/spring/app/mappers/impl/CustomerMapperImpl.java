@@ -1,15 +1,20 @@
 package com.spring.app.mappers.impl;
 
 import com.spring.app.dtos.request.CustomerDTO;
+import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.dtos.response.CustomerDetailResponseDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
-import com.spring.app.dtos.response.CustomerWithDetailResponseDTO;
+import com.spring.app.dtos.response.FullCustomerResponseDTO;
+import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.CustomerDetail;
 import com.spring.app.mappers.ICustomerMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -31,12 +36,19 @@ public class CustomerMapperImpl implements ICustomerMapper {
     }
 
     @Override
-    public CustomerWithDetailResponseDTO entitiesToCustomerWithDetailResponseDto(Customer customer, CustomerDetail customerDetail) {
+    public FullCustomerResponseDTO entitiesToFullCustomerResponseDto(Customer customer, CustomerDetail customerDetail, Address address) {
 
         CustomerDetailResponseDTO customerDetailResponseDTO = new CustomerDetailResponseDTO();
         modelMapper.map(customerDetail, customerDetailResponseDTO);
 
-        return CustomerWithDetailResponseDTO.builder()
+        AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
+        modelMapper.map(address,addressResponseDTO);
+
+        List<AddressResponseDTO> addressResponseDTOList = new ArrayList<>();
+        addressResponseDTOList.add(addressResponseDTO);
+
+
+        return FullCustomerResponseDTO.builder()
                 .idCustomer(customer.getIdCustomer())
                 .name(customer.getName())
                 .lastName(customer.getLastName())
@@ -44,7 +56,9 @@ public class CustomerMapperImpl implements ICustomerMapper {
                 .dateOfBirth(customer.getDateOfBirth())
                 .createdDate(customer.getDateOfBirth())
                 .detail(customerDetailResponseDTO)
+                .addresses(addressResponseDTOList)
                 .build();
+
     }
 
 }

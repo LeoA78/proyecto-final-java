@@ -17,7 +17,7 @@ import java.io.Serializable;
         value = "CustomerWithDetailDTO",
         description = "Represents the data needed to created an Customer With Detail"
 )
-public class CustomerWithDetailDTO implements Serializable {
+public class FullCustomerDTO implements Serializable {
     @ApiModelProperty(position = 1, required = true, notes = "Customer is required.")
     @NotNull
     @NotEmpty
@@ -27,4 +27,10 @@ public class CustomerWithDetailDTO implements Serializable {
     @NotNull
     @NotEmpty
     private CustomerDetailDTO detail;
+
+    @ApiModelProperty(position = 3, required = true, notes = "Address is required.")
+    @NotNull
+    @NotEmpty
+    private AddressDTO addressDTO;
+
 }

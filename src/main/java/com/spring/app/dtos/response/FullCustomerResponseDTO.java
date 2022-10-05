@@ -1,13 +1,13 @@
 package com.spring.app.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.spring.app.entities.CustomerDetail;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +19,7 @@ import java.time.LocalDate;
         value = "CustomerWithDetailResponseDTO",
         description = "Represents the data needed to created Customer with Detail"
 )
-public class CustomerWithDetailResponseDTO implements Serializable {
+public class FullCustomerResponseDTO implements Serializable {
 
     private Long idCustomer;
 
@@ -42,5 +42,8 @@ public class CustomerWithDetailResponseDTO implements Serializable {
 
     @ApiModelProperty(position = 6, required = true, notes = "Customer Detail is required.")
     private CustomerDetailResponseDTO detail;
+
+    @ApiModelProperty(position = 7, required = true, notes = "Customer Detail is required.")
+    private List<AddressResponseDTO> addresses;
 
 }

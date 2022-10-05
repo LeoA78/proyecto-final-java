@@ -2,10 +2,9 @@ package com.spring.app.controllers;
 
 
 import com.spring.app.dtos.request.CustomerDTO;
-import com.spring.app.dtos.request.CustomerDetailDTO;
-import com.spring.app.dtos.request.CustomerWithDetailDTO;
+import com.spring.app.dtos.request.FullCustomerDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
-import com.spring.app.dtos.response.CustomerWithDetailResponseDTO;
+import com.spring.app.dtos.response.FullCustomerResponseDTO;
 import com.spring.app.services.ICustomerService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -116,11 +115,11 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.addCustomer(customer), HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/addWithDetail", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/addFull", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
             value = "Retrieves data associated to List Master by Id",
             httpMethod = "POST",
-            response = CustomerWithDetailResponseDTO.class
+            response = FullCustomerResponseDTO.class
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -131,11 +130,11 @@ public class CustomerController {
                     code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
     })
-    public ResponseEntity<CustomerWithDetailResponseDTO> addCustomerWithDetail(
+    public ResponseEntity<FullCustomerResponseDTO> addCustomerWithDetail(
             @ApiParam(name = "customer", required = true, value = "Customer")
-            @Valid @RequestBody CustomerWithDetailDTO customerWithDetailDTO){
+            @Valid @RequestBody FullCustomerDTO fullCustomerDTO){
 
-        return new ResponseEntity<>(customerService.addCustomerWithDetail(customerWithDetailDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(customerService.addFullCustomer(fullCustomerDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})

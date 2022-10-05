@@ -51,7 +51,7 @@ public class Customer implements Serializable {
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "tbl_customers_addresses",
         joinColumns = @JoinColumn(name = "customer_id"),
         inverseJoinColumns = @JoinColumn(name = "address_id")

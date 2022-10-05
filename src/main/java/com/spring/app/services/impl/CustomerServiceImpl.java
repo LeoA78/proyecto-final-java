@@ -1,16 +1,17 @@
 package com.spring.app.services.impl;
 
 import com.spring.app.dtos.request.CustomerDTO;
-import com.spring.app.dtos.request.CustomerWithDetailDTO;
+import com.spring.app.dtos.request.FullCustomerDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
-import com.spring.app.dtos.response.CustomerWithDetailResponseDTO;
+import com.spring.app.dtos.response.FullCustomerResponseDTO;
+import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.CustomerDetail;
 import com.spring.app.exceptions.BadRequestException;
+import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.mappers.ICustomerDetailMapper;
 import com.spring.app.mappers.ICustomerMapper;
 import com.spring.app.repositories.ICustomerRepository;
-import com.spring.app.services.ICustomerDetailService;
 import com.spring.app.services.ICustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class CustomerServiceImpl implements ICustomerService {
     private ICustomerDetailMapper customerDetailMapper;
 
     @Autowired
-    private ICustomerDetailService customerDetailService;
+    private IAddressMapper addressMapper;
 
     /**
      * This method return all customers
@@ -113,31 +114,33 @@ public class CustomerServiceImpl implements ICustomerService {
     /**
      * This method adds a customer with detail to the database and returns the added customer.
      *
-     * @param customerWithDetailDTO Customer With Detail Request DTO
+     * @param fullCustomerDTO Customer With Detail Request DTO
      * @return CustomerResponseDTO
      */
     @Override
-    public CustomerWithDetailResponseDTO addCustomerWithDetail(CustomerWithDetailDTO customerWithDetailDTO) {
+    public FullCustomerResponseDTO addFullCustomer(FullCustomerDTO fullCustomerDTO) {
 
-        if (ObjectUtils.isEmpty(customerWithDetailDTO)) {
+        if (ObjectUtils.isEmpty(fullCustomerDTO)) {
             throw new BadRequestException("Empty data in the entered entity");
         }
 
-        Customer customerByDni = customerRepository.findByDni(customerWithDetailDTO.getCustomer().getDni());
+        Customer customerByDni = customerRepository.findByDni(fullCustomerDTO.getCustomer().getDni());
 
         if (customerByDni != null) {
             throw new BadRequestException("the client with the DNI entered already exists");
         }
 
-        Customer customerToCreate = customerMapper.requestDtoToEntity(customerWithDetailDTO.getCustomer());
-        CustomerDetail customerDetail = customerDetailMapper.requestDtoToEntity(customerWithDetailDTO.getDetail());
+        Customer customerToCreate = customerMapper.requestDtoToEntity(fullCustomerDTO.getCustomer());
+        CustomerDetail customerDetail = customerDetailMapper.requestDtoToEntity(fullCustomerDTO.getDetail());
+        Address address = addressMapper.requestDtoToEntity(fullCustomerDTO.getAddressDTO());
 
         customerToCreate.setCreatedDate(LocalDate.now());
         customerToCreate.setCustomerDetail(customerDetail);
+        customerToCreate.getAddressList().add(address);
 
         Customer customerCreated = customerRepository.save(customerToCreate);
 
-        return customerMapper.entitiesToCustomerWithDetailResponseDto(customerCreated,customerDetail);
+        return customerMapper.entitiesToFullCustomerResponseDto(customerCreated,customerDetail,address);
     }
 
     /**
