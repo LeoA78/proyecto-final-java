@@ -50,24 +50,24 @@ public class CustomerController {
     @ApiOperation(
             value = "Retrieves all Lists Customers",
             httpMethod = "GET",
-            response = CustomerResponseDTO.class
+            response = FullCustomerResponseDTO.class
     )
     @ApiResponses(value = {
             @ApiResponse(code = 200,
                     message = "Body content with basic information about customers",
-                    response = CustomerResponseDTO.class),
+                    response = FullCustomerResponseDTO.class),
             @ApiResponse(
                     code = 204,
                     message = "Body content is empty")
     })
-    public ResponseEntity<CustomerResponseDTO> getCustomerById(
+    public ResponseEntity<FullCustomerResponseDTO> getCustomerById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
             @PathVariable("id") Long id) {
 
-        CustomerResponseDTO customerResponseDTO = customerService.findCustomerById(id);
+        FullCustomerResponseDTO fullCustomerResponseDTO = customerService.findCustomerById(id);
 
 
-        return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(fullCustomerResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{id}")
@@ -97,28 +97,6 @@ public class CustomerController {
     @ApiOperation(
             value = "Retrieves data associated to List Master by Id",
             httpMethod = "POST",
-            response = CustomerResponseDTO.class
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    code = 201,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
-            @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
-    })
-    public ResponseEntity<CustomerResponseDTO> addCustomer(
-            @ApiParam(name = "customer", required = true, value = "Customer")
-            @RequestBody CustomerDTO customer) {
-
-        return new ResponseEntity<>(customerService.addCustomer(customer), HttpStatus.CREATED);
-    }
-
-    @PostMapping(value = "/addFull", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(
-            value = "Retrieves data associated to List Master by Id",
-            httpMethod = "POST",
             response = FullCustomerResponseDTO.class
     )
     @ApiResponses(value = {
@@ -134,7 +112,7 @@ public class CustomerController {
             @ApiParam(name = "customer", required = true, value = "Customer")
             @Valid @RequestBody FullCustomerDTO fullCustomerDTO){
 
-        return new ResponseEntity<>(customerService.addFullCustomer(fullCustomerDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(customerService.addCustomer(fullCustomerDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})

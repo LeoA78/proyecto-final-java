@@ -10,7 +10,9 @@ import com.spring.app.entities.CustomerDetail;
 public interface ICustomerMapper {
     CustomerResponseDTO entityToResponseDto(Customer customer);
 
+
+    FullCustomerResponseDTO entityToFullResponseDto(Customer customer);
+
     Customer requestDtoToEntity(CustomerDTO requestDto);
 
-    FullCustomerResponseDTO entitiesToFullCustomerResponseDto(Customer customer, CustomerDetail customerDetail, Address address);
 }

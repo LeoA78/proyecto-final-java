@@ -63,16 +63,16 @@ public class CustomerServiceImpl implements ICustomerService {
      * This method return one customer
      *
      * @param id
-     * @return CustomerResponseDTO
+     * @return FullCustomerResponseDTO
      */
     @Override
-    public CustomerResponseDTO findCustomerById(Long id) {
+    public FullCustomerResponseDTO findCustomerById(Long id) {
 
         if (id < 0) {
             throw new BadRequestException("El id no puede ser un número negativo.");
         }
 
-        CustomerResponseDTO customerResponseDTO;
+        FullCustomerResponseDTO fullCustomerResponseDTO;
 
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
 
@@ -80,36 +80,11 @@ public class CustomerServiceImpl implements ICustomerService {
             throw new IllegalStateException("El registro con el id " + id + " no existe.");
         }
 
-        customerResponseDTO = customerMapper.entityToResponseDto(optionalCustomer.get());
+        fullCustomerResponseDTO = customerMapper.entityToFullResponseDto(optionalCustomer.get());
 
-        return customerResponseDTO;
+        return fullCustomerResponseDTO;
     }
 
-    /**
-     * This method adds a customer to the database and returns the added customer.
-     *
-     * @param customerDTO Customer Request DTO
-     * @return CustomerResponseDTO
-     */
-    @Override
-    public CustomerResponseDTO addCustomer(CustomerDTO customerDTO) {
-        CustomerResponseDTO customerResponseDTO;
-
-        Customer customerByDni = customerRepository.findByDni(customerDTO.getDni());
-
-        if (customerByDni != null) {
-            throw new BadRequestException("the client with the DNI entered already exists");
-        }
-
-        Customer customerEntity = customerMapper.requestDtoToEntity(customerDTO);
-        customerEntity.setCreatedDate(LocalDate.now());
-
-        Customer savedCustomer = customerRepository.save(customerEntity);
-
-        customerResponseDTO = customerMapper.entityToResponseDto(savedCustomer);
-
-        return customerResponseDTO;
-    }
 
     /**
      * This method adds a customer with detail to the database and returns the added customer.
@@ -118,7 +93,7 @@ public class CustomerServiceImpl implements ICustomerService {
      * @return CustomerResponseDTO
      */
     @Override
-    public FullCustomerResponseDTO addFullCustomer(FullCustomerDTO fullCustomerDTO) {
+    public FullCustomerResponseDTO addCustomer(FullCustomerDTO fullCustomerDTO) {
 
         if (ObjectUtils.isEmpty(fullCustomerDTO)) {
             throw new BadRequestException("Empty data in the entered entity");
@@ -136,11 +111,11 @@ public class CustomerServiceImpl implements ICustomerService {
 
         customerToCreate.setCreatedDate(LocalDate.now());
         customerToCreate.setCustomerDetail(customerDetail);
-        customerToCreate.getAddressList().add(address);
+        customerToCreate.addAddress(address);
 
         Customer customerCreated = customerRepository.save(customerToCreate);
 
-        return customerMapper.entitiesToFullCustomerResponseDto(customerCreated,customerDetail,address);
+        return customerMapper.entityToFullResponseDto(customerCreated);
     }
 
     /**

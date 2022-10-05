@@ -29,8 +29,8 @@ public class Address implements Serializable {
     @Column(name = "street", nullable = false, length = 30)
     private String street;
 
-    @Column(name = "number", nullable = false)
-    private Integer number;
+    @Column(name = "number", nullable = false, length = 10)
+    private String number;
 
     @Column(name = "apartment", length = 10)
     private String apartment;

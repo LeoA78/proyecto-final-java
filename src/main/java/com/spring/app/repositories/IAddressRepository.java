@@ -14,7 +14,7 @@ public interface IAddressRepository extends JpaRepository<Address, Long> {
             "(A.city = :city)")
     long repeatedAddressValidation(
             @Param("street") String street,
-            @Param("number") Integer number,
+            @Param("number") String number,
             @Param("apartment") String apartment,
             @Param("city") String city);
 

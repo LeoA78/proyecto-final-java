@@ -29,24 +29,22 @@ public class CustomerMapperImpl implements ICustomerMapper {
     }
 
     @Override
-    public Customer requestDtoToEntity(CustomerDTO requestDto) {
-        Customer customer = new Customer();
-        modelMapper.map(requestDto, customer);
-        return customer;
-    }
-
-    @Override
-    public FullCustomerResponseDTO entitiesToFullCustomerResponseDto(Customer customer, CustomerDetail customerDetail, Address address) {
-
+    public FullCustomerResponseDTO entityToFullResponseDto(Customer customer) {
         CustomerDetailResponseDTO customerDetailResponseDTO = new CustomerDetailResponseDTO();
-        modelMapper.map(customerDetail, customerDetailResponseDTO);
+        modelMapper.map(customer.getCustomerDetail(), customerDetailResponseDTO);
 
-        AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
-        modelMapper.map(address,addressResponseDTO);
 
         List<AddressResponseDTO> addressResponseDTOList = new ArrayList<>();
-        addressResponseDTOList.add(addressResponseDTO);
+        AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
 
+
+        for (int i = 0; i < customer.getAddressList().size(); i++) {
+
+            Address addressToMap = customer.getAddressList().get(i);
+            modelMapper.map(addressToMap,addressResponseDTO);
+            addressResponseDTOList.add(addressResponseDTO);
+
+        }
 
         return FullCustomerResponseDTO.builder()
                 .idCustomer(customer.getIdCustomer())
@@ -54,11 +52,19 @@ public class CustomerMapperImpl implements ICustomerMapper {
                 .lastName(customer.getLastName())
                 .dni(customer.getDni())
                 .dateOfBirth(customer.getDateOfBirth())
-                .createdDate(customer.getDateOfBirth())
+                .createdDate(customer.getCreatedDate())
                 .detail(customerDetailResponseDTO)
                 .addresses(addressResponseDTOList)
                 .build();
-
     }
+
+    @Override
+    public Customer requestDtoToEntity(CustomerDTO requestDto) {
+        Customer customer = new Customer();
+        modelMapper.map(requestDto, customer);
+        return customer;
+    }
+
+
 
 }

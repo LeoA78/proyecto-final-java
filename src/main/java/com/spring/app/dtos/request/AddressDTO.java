@@ -23,9 +23,9 @@ public class AddressDTO implements Serializable {
     @NotNull
     private String street;
 
-    @ApiModelProperty(position = 2, required = true, notes = "Non negative value, The number is required.")
+    @ApiModelProperty(position = 2, required = true, notes = "The number is required.")
     @NotNull
-    private Integer number;
+    private String number;
 
     @ApiModelProperty(position = 3, notes = "The apartment is optional.")
     private String apartment;

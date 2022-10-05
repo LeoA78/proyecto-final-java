@@ -51,7 +51,7 @@ public class Customer implements Serializable {
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "tbl_customers_addresses",
         joinColumns = @JoinColumn(name = "customer_id"),
         inverseJoinColumns = @JoinColumn(name = "address_id")
@@ -60,6 +60,11 @@ public class Customer implements Serializable {
 
     @OneToMany(mappedBy = "customer")
     private List<Invoice> invoiceList = new ArrayList<>();
+
+
+    public void addAddress(Address address){
+        addressList.add(address);
+    }
 
 
 }

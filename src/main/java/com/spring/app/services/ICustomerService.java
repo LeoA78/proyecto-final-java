@@ -8,13 +8,12 @@ import com.spring.app.dtos.response.FullCustomerResponseDTO;
 import java.util.List;
 
 public interface ICustomerService {
+
     List<CustomerResponseDTO> findAllCustomers();
 
-    CustomerResponseDTO findCustomerById(Long id);
+    FullCustomerResponseDTO findCustomerById(Long id);
 
-    CustomerResponseDTO addCustomer(CustomerDTO customerDTO);
-
-    FullCustomerResponseDTO addFullCustomer(FullCustomerDTO fullCustomerDTO);
+    FullCustomerResponseDTO addCustomer(FullCustomerDTO fullCustomerDTO);
 
     CustomerResponseDTO updateCustomer(Long id, CustomerDTO customerDTO);
 
