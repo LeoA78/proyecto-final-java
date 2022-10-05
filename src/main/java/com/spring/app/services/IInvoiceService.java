@@ -1,6 +1,8 @@
 package com.spring.app.services;
 
+import com.spring.app.dtos.request.FullInvoiceDTO;
 import com.spring.app.dtos.request.InvoiceDTO;
+import com.spring.app.dtos.response.FullInvoiceResponseDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
 
 import java.util.List;
@@ -10,7 +12,7 @@ public interface IInvoiceService {
 
     InvoiceResponseDTO findInvoiceById(Long id);
 
-    InvoiceResponseDTO addInvoice(InvoiceDTO invoiceDTO);
+    FullInvoiceResponseDTO addInvoice(FullInvoiceDTO fullInvoiceDTO);
 
     InvoiceResponseDTO updateInvoice(Long id, InvoiceDTO invoiceDTO);
 

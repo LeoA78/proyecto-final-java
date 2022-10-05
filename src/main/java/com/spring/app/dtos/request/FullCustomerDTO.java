@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel(
-        value = "CustomerWithDetailDTO",
+        value = "FullCustomerDTO",
         description = "Represents the data needed to created an Customer With Detail"
 )
 public class FullCustomerDTO implements Serializable {

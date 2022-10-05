@@ -1,6 +1,8 @@
 package com.spring.app.controllers;
 
+import com.spring.app.dtos.request.FullInvoiceDTO;
 import com.spring.app.dtos.request.InvoiceDTO;
+import com.spring.app.dtos.response.FullInvoiceResponseDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.services.IInvoiceService;
 import io.swagger.annotations.*;
@@ -93,7 +95,7 @@ public class InvoiceController {
     @ApiOperation(
             value = "Retrieves data associated to List Master by Id",
             httpMethod = "POST",
-            response = InvoiceResponseDTO.class
+            response = FullInvoiceResponseDTO.class
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -104,11 +106,11 @@ public class InvoiceController {
                     code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
     })
-    public ResponseEntity<InvoiceResponseDTO> addInvoice(
+    public ResponseEntity<FullInvoiceResponseDTO> addInvoice(
             @ApiParam(name = "invoice", required = true, value = "Invoice")
-            @RequestBody InvoiceDTO invoice) {
+            @RequestBody FullInvoiceDTO fullInvoiceDTO) {
 
-        return new ResponseEntity<>(invoiceService.addInvoice(invoice), HttpStatus.CREATED);
+        return new ResponseEntity<>(invoiceService.addInvoice(fullInvoiceDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})

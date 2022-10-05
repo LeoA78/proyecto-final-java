@@ -16,8 +16,8 @@ import java.util.List;
 @Builder
 @Setter
 @ApiModel(
-        value = "CustomerWithDetailResponseDTO",
-        description = "Represents the data needed to created Customer with Detail"
+        value = "FullCustomerResponseDTO",
+        description = "Represents the data needed to created Full Customer"
 )
 public class FullCustomerResponseDTO implements Serializable {
 

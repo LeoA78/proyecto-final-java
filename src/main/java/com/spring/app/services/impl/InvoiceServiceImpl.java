@@ -1,10 +1,15 @@
 package com.spring.app.services.impl;
 
+import com.spring.app.dtos.request.FullInvoiceDTO;
 import com.spring.app.dtos.request.InvoiceDTO;
+import com.spring.app.dtos.response.FullInvoiceResponseDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
+import com.spring.app.entities.Customer;
 import com.spring.app.entities.Invoice;
 import com.spring.app.exceptions.BadRequestException;
+import com.spring.app.mappers.ICustomerMapper;
 import com.spring.app.mappers.IInvoiceMapper;
+import com.spring.app.repositories.ICustomerRepository;
 import com.spring.app.repositories.IInvoiceRepository;
 import com.spring.app.services.IInvoiceService;
 import lombok.AllArgsConstructor;
@@ -27,6 +32,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     @Autowired
     private IInvoiceMapper invoiceMapper;
+
+    @Autowired
+    private ICustomerRepository customerRepository;
 
     /**
      * This method return all invoices
@@ -75,21 +83,30 @@ public class InvoiceServiceImpl implements IInvoiceService {
     /**
      * This method adds an invoice to the database and returns the added invoice.
      *
-     * @param invoiceDTO Invoice Request DTO
-     * @return InvoiceResponseDTO
+     * @param fullInvoiceDTO Invoice Request DTO
+     * @return fullInvoiceResponseDTO
      */
     @Override
-    public InvoiceResponseDTO addInvoice(InvoiceDTO invoiceDTO) {
-        InvoiceResponseDTO invoiceResponseDTO;
+    public FullInvoiceResponseDTO addInvoice(FullInvoiceDTO fullInvoiceDTO) {
+        Double totalInvoice = fullInvoiceDTO.getInvoice().getTotal();
 
-        Invoice invoiceEntity = invoiceMapper.requestDtoToEntity(invoiceDTO);
-        invoiceEntity.setCreatedDate(LocalDate.now());
+        if(totalInvoice <= 0 ){
+            throw new BadRequestException("Total cannot be zero or negative");
+        }
 
-        Invoice savedInvoice = invoiceRepository.save(invoiceEntity);
+        Customer customerByDni = customerRepository.findByDni(fullInvoiceDTO.getCustomerDni());
 
-        invoiceResponseDTO = invoiceMapper.entityToResponseDto(savedInvoice);
+        if(customerByDni == null){
+            throw new BadRequestException("Customer doesn't exist");
+        }
 
-        return invoiceResponseDTO;
+        Invoice invoiceToCreate = invoiceMapper.requestDtoToEntity(fullInvoiceDTO.getInvoice());
+        invoiceToCreate.setCreatedDate(LocalDate.now());
+        invoiceToCreate.setCustomer(customerByDni);
+
+        Invoice createdInvoice = invoiceRepository.save(invoiceToCreate);
+
+        return invoiceMapper.entityToFullInvoice(createdInvoice);
     }
 
     /**
