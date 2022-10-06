@@ -1,8 +1,6 @@
 package com.spring.app.controllers;
 
-import com.spring.app.dtos.request.FullInvoiceDTO;
 import com.spring.app.dtos.request.InvoiceDTO;
-import com.spring.app.dtos.response.FullInvoiceResponseDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.services.IInvoiceService;
 import io.swagger.annotations.*;
@@ -48,24 +46,24 @@ public class InvoiceController {
     @ApiOperation(
             value = "Retrieves all Lists Invoices",
             httpMethod = "GET",
-            response = FullInvoiceResponseDTO.class
+            response = InvoiceResponseDTO.class
     )
     @ApiResponses(value = {
             @ApiResponse(code = 200,
                     message = "Body content with basic information about invoices",
-                    response = FullInvoiceResponseDTO.class),
+                    response = InvoiceResponseDTO.class),
             @ApiResponse(
                     code = 204,
                     message = "Body content is empty")
     })
-    public ResponseEntity<FullInvoiceResponseDTO> getInvoiceById(
+    public ResponseEntity<InvoiceResponseDTO> getInvoiceById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
             @PathVariable("id") Long id) {
 
-        FullInvoiceResponseDTO fullInvoiceResponseDTO = invoiceService.findInvoiceById(id);
+        InvoiceResponseDTO invoiceResponseDTO = invoiceService.findInvoiceById(id);
 
 
-        return new ResponseEntity<>(fullInvoiceResponseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(invoiceResponseDTO,HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{id}")
@@ -95,7 +93,7 @@ public class InvoiceController {
     @ApiOperation(
             value = "Retrieves data associated to List Master by Id",
             httpMethod = "POST",
-            response = FullInvoiceResponseDTO.class
+            response = InvoiceResponseDTO.class
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -106,11 +104,11 @@ public class InvoiceController {
                     code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
     })
-    public ResponseEntity<FullInvoiceResponseDTO> addInvoice(
+    public ResponseEntity<InvoiceResponseDTO> addInvoice(
             @ApiParam(name = "invoice", required = true, value = "Invoice")
-            @RequestBody FullInvoiceDTO fullInvoiceDTO) {
+            @RequestBody InvoiceDTO invoiceDTO) {
 
-        return new ResponseEntity<>(invoiceService.addInvoice(fullInvoiceDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(invoiceService.addInvoice(invoiceDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})

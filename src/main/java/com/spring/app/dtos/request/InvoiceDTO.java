@@ -35,4 +35,8 @@ public class InvoiceDTO implements Serializable{
     @NotNull
     private LocalDate createdDate;
 
+    @ApiModelProperty(position = 5 , required = true, notes = "Non negative value, Customer DNI is required.")
+    @NotNull
+    private String customerDni;
+
 }

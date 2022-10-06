@@ -35,4 +35,7 @@ public class InvoiceResponseDTO implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
 
+    @ApiModelProperty(position = 5, notes = "Customer is required.")
+    private FullCustomerResponseDTO customer;
+
 }

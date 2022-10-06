@@ -1,8 +1,6 @@
 package com.spring.app.services.impl;
 
-import com.spring.app.dtos.request.FullInvoiceDTO;
 import com.spring.app.dtos.request.InvoiceDTO;
-import com.spring.app.dtos.response.FullInvoiceResponseDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.Invoice;
@@ -60,13 +58,13 @@ public class InvoiceServiceImpl implements IInvoiceService {
      * @return InvoiceResponseDTO
      */
     @Override
-    public FullInvoiceResponseDTO findInvoiceById(Long id) {
+    public InvoiceResponseDTO findInvoiceById(Long id) {
 
         if (id < 0) {
             throw new BadRequestException("El id no puede ser un número negativo.");
         }
 
-        FullInvoiceResponseDTO fullInvoiceResponseDTO;
+        InvoiceResponseDTO fullInvoiceResponseDTO;
 
         Optional<Invoice> optionalInvoice = invoiceRepository.findById(id);
 
@@ -74,7 +72,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
             throw new IllegalStateException("El registro con el id " + id + " no existe.");
         }
 
-        fullInvoiceResponseDTO = invoiceMapper.entityToFullInvoice(optionalInvoice.get());
+        fullInvoiceResponseDTO = invoiceMapper.entityToResponseDto(optionalInvoice.get());
 
         return fullInvoiceResponseDTO;
     }
@@ -82,30 +80,30 @@ public class InvoiceServiceImpl implements IInvoiceService {
     /**
      * This method adds an invoice to the database and returns the added invoice.
      *
-     * @param fullInvoiceDTO Invoice Request DTO
+     * @param invoiceDTO Invoice Request DTO
      * @return fullInvoiceResponseDTO
      */
     @Override
-    public FullInvoiceResponseDTO addInvoice(FullInvoiceDTO fullInvoiceDTO) {
-        Double totalInvoice = fullInvoiceDTO.getInvoice().getTotal();
+    public InvoiceResponseDTO addInvoice(InvoiceDTO invoiceDTO) {
+        Double totalInvoice = invoiceDTO.getTotal();
 
         if(totalInvoice <= 0 ){
             throw new BadRequestException("Total cannot be zero or negative");
         }
 
-        Customer customerByDni = customerRepository.findByDni(fullInvoiceDTO.getCustomerDni());
+        Customer customerByDni = customerRepository.findByDni(invoiceDTO.getCustomerDni());
 
         if(customerByDni == null){
             throw new BadRequestException("Customer doesn't exist");
         }
 
-        Invoice invoiceToCreate = invoiceMapper.requestDtoToEntity(fullInvoiceDTO.getInvoice());
+        Invoice invoiceToCreate = invoiceMapper.requestDtoToEntity(invoiceDTO);
         invoiceToCreate.setCreatedDate(LocalDate.now());
         invoiceToCreate.setCustomer(customerByDni);
 
         Invoice createdInvoice = invoiceRepository.save(invoiceToCreate);
 
-        return invoiceMapper.entityToFullInvoice(createdInvoice);
+        return invoiceMapper.entityToResponseDto(createdInvoice);
     }
 
     /**
