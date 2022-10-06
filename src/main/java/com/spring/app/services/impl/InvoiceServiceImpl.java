@@ -7,7 +7,6 @@ import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.Invoice;
 import com.spring.app.exceptions.BadRequestException;
-import com.spring.app.mappers.ICustomerMapper;
 import com.spring.app.mappers.IInvoiceMapper;
 import com.spring.app.repositories.ICustomerRepository;
 import com.spring.app.repositories.IInvoiceRepository;
@@ -61,13 +60,13 @@ public class InvoiceServiceImpl implements IInvoiceService {
      * @return InvoiceResponseDTO
      */
     @Override
-    public InvoiceResponseDTO findInvoiceById(Long id) {
+    public FullInvoiceResponseDTO findInvoiceById(Long id) {
 
         if (id < 0) {
             throw new BadRequestException("El id no puede ser un número negativo.");
         }
 
-        InvoiceResponseDTO invoiceResponseDTO;
+        FullInvoiceResponseDTO fullInvoiceResponseDTO;
 
         Optional<Invoice> optionalInvoice = invoiceRepository.findById(id);
 
@@ -75,9 +74,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
             throw new IllegalStateException("El registro con el id " + id + " no existe.");
         }
 
-        invoiceResponseDTO = invoiceMapper.entityToResponseDto(optionalInvoice.get());
+        fullInvoiceResponseDTO = invoiceMapper.entityToFullInvoice(optionalInvoice.get());
 
-        return invoiceResponseDTO;
+        return fullInvoiceResponseDTO;
     }
 
     /**

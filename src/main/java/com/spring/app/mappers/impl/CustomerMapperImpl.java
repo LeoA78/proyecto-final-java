@@ -7,7 +7,6 @@ import com.spring.app.dtos.response.CustomerResponseDTO;
 import com.spring.app.dtos.response.FullCustomerResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
-import com.spring.app.entities.CustomerDetail;
 import com.spring.app.mappers.ICustomerMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -20,6 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomerMapperImpl implements ICustomerMapper {
     private final ModelMapper modelMapper;
+
+
 
     @Override
     public CustomerResponseDTO entityToResponseDto(Customer customer) {
@@ -37,13 +38,9 @@ public class CustomerMapperImpl implements ICustomerMapper {
         List<AddressResponseDTO> addressResponseDTOList = new ArrayList<>();
         AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
 
-
-        for (int i = 0; i < customer.getAddressList().size(); i++) {
-
-            Address addressToMap = customer.getAddressList().get(i);
-            modelMapper.map(addressToMap,addressResponseDTO);
+        for(Address address :customer.getAddressList()) {
+            modelMapper.map(address,addressResponseDTO);
             addressResponseDTOList.add(addressResponseDTO);
-
         }
 
         return FullCustomerResponseDTO.builder()

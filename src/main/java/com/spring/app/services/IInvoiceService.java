@@ -10,7 +10,8 @@ import java.util.List;
 public interface IInvoiceService {
     List<InvoiceResponseDTO> findAllInvoices();
 
-    InvoiceResponseDTO findInvoiceById(Long id);
+
+    FullInvoiceResponseDTO findInvoiceById(Long id);
 
     FullInvoiceResponseDTO addInvoice(FullInvoiceDTO fullInvoiceDTO);
 

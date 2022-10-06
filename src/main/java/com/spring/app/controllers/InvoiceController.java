@@ -48,24 +48,24 @@ public class InvoiceController {
     @ApiOperation(
             value = "Retrieves all Lists Invoices",
             httpMethod = "GET",
-            response = InvoiceResponseDTO.class
+            response = FullInvoiceResponseDTO.class
     )
     @ApiResponses(value = {
             @ApiResponse(code = 200,
                     message = "Body content with basic information about invoices",
-                    response = InvoiceResponseDTO.class),
+                    response = FullInvoiceResponseDTO.class),
             @ApiResponse(
                     code = 204,
                     message = "Body content is empty")
     })
-    public ResponseEntity<InvoiceResponseDTO> getInvoiceById(
+    public ResponseEntity<FullInvoiceResponseDTO> getInvoiceById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
             @PathVariable("id") Long id) {
 
-        InvoiceResponseDTO invoiceResponseDTO = invoiceService.findInvoiceById(id);
+        FullInvoiceResponseDTO fullInvoiceResponseDTO = invoiceService.findInvoiceById(id);
 
 
-        return new ResponseEntity<>(invoiceResponseDTO,HttpStatus.OK);
+        return new ResponseEntity<>(fullInvoiceResponseDTO,HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{id}")

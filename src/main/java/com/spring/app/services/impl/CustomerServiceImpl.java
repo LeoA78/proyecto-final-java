@@ -110,14 +110,14 @@ public class CustomerServiceImpl implements ICustomerService {
             throw new BadRequestException("the client with the DNI entered already exists");
         }
 
-        AddressDTO addressDTO = fullCustomerDTO.getAddressDTO();
+        AddressDTO addressDTO = fullCustomerDTO.getAddress();
 
 
 
         Customer customerToCreate = customerMapper.requestDtoToEntity(fullCustomerDTO.getCustomer());
         CustomerDetail customerDetail = customerDetailMapper.requestDtoToEntity(fullCustomerDTO.getDetail());
 
-        Address address = addressMapper.requestDtoToEntity(fullCustomerDTO.getAddressDTO());
+        Address address = addressMapper.requestDtoToEntity(fullCustomerDTO.getAddress());
 
         customerToCreate.setCreatedDate(LocalDate.now());
         customerToCreate.setCustomerDetail(customerDetail);
