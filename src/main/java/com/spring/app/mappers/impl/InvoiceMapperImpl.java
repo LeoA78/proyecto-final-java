@@ -3,7 +3,6 @@ package com.spring.app.mappers.impl;
 import com.spring.app.dtos.request.InvoiceDTO;
 import com.spring.app.dtos.response.*;
 import com.spring.app.entities.Invoice;
-import com.spring.app.mappers.ICustomerDetailMapper;
 import com.spring.app.mappers.ICustomerMapper;
 import com.spring.app.mappers.IInvoiceMapper;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,7 @@ public class InvoiceMapperImpl implements IInvoiceMapper {
 
     @Override
     public InvoiceResponseDTO entityToResponseDto(Invoice invoice) {
-        FullCustomerResponseDTO fullCustomerResponseDTO = customerMapper.entityToFullResponseDto(invoice.getCustomer());
+        CustomerResponseDTO customerResponseDTO = customerMapper.entityToResponseDto(invoice.getCustomer());
 
         return InvoiceResponseDTO.builder()
                 .idInvoice(invoice.getIdInvoice())
@@ -36,7 +35,7 @@ public class InvoiceMapperImpl implements IInvoiceMapper {
                 .description(invoice.getDescription())
                 .createdDate(invoice.getCreatedDate())
                 .total(invoice.getTotal())
-                .customer(fullCustomerResponseDTO)
+                .customer(customerResponseDTO)
                 .build();
     }
 }

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -34,5 +35,15 @@ public class CustomerDTO implements Serializable {
     @ApiModelProperty(position = 4, required = true, notes = "Non negative value, Date of Birth is required.")
     @NotNull
     private LocalDate dateOfBirth;
+
+    @ApiModelProperty(position = 5, required = true, notes = "Customer Detail is required.")
+    @NotNull
+    @NotEmpty
+    private CustomerDetailDTO detail;
+
+    @ApiModelProperty(position = 6, required = true, notes = "Address is required.")
+    @NotNull
+    @NotEmpty
+    private AddressDTO address;
 
 }

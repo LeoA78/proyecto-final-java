@@ -2,9 +2,7 @@ package com.spring.app.controllers;
 
 
 import com.spring.app.dtos.request.CustomerDTO;
-import com.spring.app.dtos.request.FullCustomerDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
-import com.spring.app.dtos.response.FullCustomerResponseDTO;
 import com.spring.app.services.ICustomerService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -50,24 +48,24 @@ public class CustomerController {
     @ApiOperation(
             value = "Retrieves all Lists Customers",
             httpMethod = "GET",
-            response = FullCustomerResponseDTO.class
+            response = CustomerResponseDTO.class
     )
     @ApiResponses(value = {
             @ApiResponse(code = 200,
                     message = "Body content with basic information about customers",
-                    response = FullCustomerResponseDTO.class),
+                    response = CustomerResponseDTO.class),
             @ApiResponse(
                     code = 204,
                     message = "Body content is empty")
     })
-    public ResponseEntity<FullCustomerResponseDTO> getCustomerById(
+    public ResponseEntity<CustomerResponseDTO> getCustomerById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
             @PathVariable("id") Long id) {
 
-        FullCustomerResponseDTO fullCustomerResponseDTO = customerService.findCustomerById(id);
+        CustomerResponseDTO customerResponseDTO = customerService.findCustomerById(id);
 
 
-        return new ResponseEntity<>(fullCustomerResponseDTO, HttpStatus.OK);
+        return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{id}")
@@ -97,7 +95,7 @@ public class CustomerController {
     @ApiOperation(
             value = "Retrieves data associated to List Master by Id",
             httpMethod = "POST",
-            response = FullCustomerResponseDTO.class
+            response = CustomerResponseDTO.class
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -108,11 +106,11 @@ public class CustomerController {
                     code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
     })
-    public ResponseEntity<FullCustomerResponseDTO> addCustomerWithDetail(
+    public ResponseEntity<CustomerResponseDTO> addCustomerWithDetail(
             @ApiParam(name = "customer", required = true, value = "Customer")
-            @Valid @RequestBody FullCustomerDTO fullCustomerDTO){
+            @Valid @RequestBody CustomerDTO customerDTO){
 
-        return new ResponseEntity<>(customerService.addCustomer(fullCustomerDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(customerService.addCustomer(customerDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})

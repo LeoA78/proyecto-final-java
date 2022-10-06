@@ -36,6 +36,6 @@ public class InvoiceResponseDTO implements Serializable {
     private LocalDate createdDate;
 
     @ApiModelProperty(position = 5, notes = "Customer is required.")
-    private FullCustomerResponseDTO customer;
+    private CustomerResponseDTO customer;
 
 }

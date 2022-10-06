@@ -1,12 +1,13 @@
 package com.spring.app.mappers.impl;
 
+import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.request.CustomerDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.dtos.response.CustomerDetailResponseDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
-import com.spring.app.dtos.response.FullCustomerResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
+import com.spring.app.entities.CustomerDetail;
 import com.spring.app.mappers.ICustomerMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,14 +24,14 @@ public class CustomerMapperImpl implements ICustomerMapper {
 
 
     @Override
-    public CustomerResponseDTO entityToResponseDto(Customer customer) {
-        CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO();
-        modelMapper.map(customer, customerResponseDTO);
-        return customerResponseDTO;
+    public Customer requestDtoToEntity(CustomerDTO requestDto) {
+        Customer customer = new Customer();
+        modelMapper.map(requestDto, customer);
+        return customer;
     }
 
     @Override
-    public FullCustomerResponseDTO entityToFullResponseDto(Customer customer) {
+    public CustomerResponseDTO entityToResponseDto(Customer customer) {
         CustomerDetailResponseDTO customerDetailResponseDTO = new CustomerDetailResponseDTO();
         modelMapper.map(customer.getCustomerDetail(), customerDetailResponseDTO);
 
@@ -43,7 +44,7 @@ public class CustomerMapperImpl implements ICustomerMapper {
             addressResponseDTOList.add(addressResponseDTO);
         }
 
-        return FullCustomerResponseDTO.builder()
+        return CustomerResponseDTO.builder()
                 .idCustomer(customer.getIdCustomer())
                 .name(customer.getName())
                 .lastName(customer.getLastName())
@@ -55,12 +56,7 @@ public class CustomerMapperImpl implements ICustomerMapper {
                 .build();
     }
 
-    @Override
-    public Customer requestDtoToEntity(CustomerDTO requestDto) {
-        Customer customer = new Customer();
-        modelMapper.map(requestDto, customer);
-        return customer;
-    }
+
 
 
 
