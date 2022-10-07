@@ -20,9 +20,7 @@ public class InvoiceMapperImpl implements IInvoiceMapper {
 
     @Override
     public Invoice requestDtoToEntity(InvoiceDTO requestDto) {
-        Invoice invoice = new Invoice();
-        modelMapper.map(requestDto, invoice);
-        return invoice;
+        return modelMapper.map(requestDto, Invoice.class);
     }
 
     @Override

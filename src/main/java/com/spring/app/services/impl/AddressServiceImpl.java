@@ -1,19 +1,23 @@
 package com.spring.app.services.impl;
 
-import com.spring.app.dtos.request.AddressDTO;
+import com.spring.app.dtos.request.AddressWithCustomerDniDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.entities.Address;
+import com.spring.app.entities.Customer;
 import com.spring.app.exceptions.BadRequestException;
 import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.repositories.IAddressRepository;
+import com.spring.app.repositories.ICustomerRepository;
 import com.spring.app.services.IAddressService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -26,6 +30,9 @@ public class AddressServiceImpl implements IAddressService {
 
     @Autowired
     private IAddressMapper addressMapper;
+
+    @Autowired
+    private ICustomerRepository customerRepository;
 
     /**
      * This method return all addresses
@@ -75,11 +82,20 @@ public class AddressServiceImpl implements IAddressService {
      * @return AddressResponseDTO
      */
     @Override
-    public AddressResponseDTO addAddress(AddressDTO addressDTO){
-        AddressResponseDTO addressResponseDTO;
+    public AddressResponseDTO addAddress(AddressWithCustomerDniDTO addressDTO){
+        Address createdAddress;
 
-/*
-        Optional<Address>  address = addressRepository.repeatedAddressValidation(
+        if (ObjectUtils.isEmpty(addressDTO)) {
+            throw new BadRequestException("Empty data in the entered entity");
+        }
+
+        Customer customerByDni = customerRepository.findByDni(addressDTO.getCustomerDni());
+
+        if (customerByDni == null) {
+            throw new BadRequestException("Cannot create an address without an associated customer");
+        }
+
+        Optional<Address> repeatedAddress = addressRepository.repeatedAddressValidation(
                 addressDTO.getStreet(),
                 addressDTO.getNumber(),
                 addressDTO.getApartment(),
@@ -89,17 +105,26 @@ public class AddressServiceImpl implements IAddressService {
                 addressDTO.getCountry()
         );
 
-        if (address.isPresent()) {
-            throw new BadRequestException("Existing address");
+        if(repeatedAddress.isPresent()) {
+
+            //Si el cliente ya tiene esa dirección no permitirle repetirla
+            for (Address addressCustomer : customerByDni.getAddressList()) {
+                if(Objects.equals(addressCustomer.getIdAddress(), repeatedAddress.get().getIdAddress())){
+                    throw new BadRequestException("The address is already associated with the customer");
+                }
+            }
+
+            repeatedAddress.get().getCustomerList().add(customerByDni);
+            customerByDni.getAddressList().add(repeatedAddress.get());
+            createdAddress = addressRepository.save(repeatedAddress.get());
+        } else {
+            Address addressToCreate = addressMapper.requestDtoToEntity(addressDTO);
+            addressToCreate.getCustomerList().add(customerByDni);
+            customerByDni.getAddressList().add(addressToCreate);
+            createdAddress = addressRepository.save(addressToCreate);
         }
-*/
-        Address addressEntity = addressMapper.requestDtoToEntity(addressDTO);
 
-        Address savedAddress = addressRepository.save(addressEntity);
-
-        addressResponseDTO = addressMapper.entityToResponseDto(savedAddress);
-
-        return addressResponseDTO;
+        return addressMapper.entityToResponseDto(createdAddress);
     }
 
     /**
@@ -109,7 +134,7 @@ public class AddressServiceImpl implements IAddressService {
      * @return AddressResponseDTO
      */
     @Override
-    public AddressResponseDTO updateAddress(Long id, AddressDTO addressDTO){
+    public AddressResponseDTO updateAddress(Long id, AddressWithCustomerDniDTO addressDTO){
 
         Optional<Address> optionalEntity = addressRepository.findById(id);
 

@@ -1,6 +1,7 @@
 package com.spring.app.mappers.impl;
 
 import com.spring.app.dtos.request.AddressDTO;
+import com.spring.app.dtos.request.AddressWithCustomerDniDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.mappers.IAddressMapper;
@@ -15,15 +16,16 @@ public class AddressMapperImpl implements IAddressMapper {
 
     @Override
     public AddressResponseDTO entityToResponseDto(Address address) {
-        AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
-        modelMapper.map(address, addressResponseDTO);
-        return addressResponseDTO;
+        return modelMapper.map(address, AddressResponseDTO.class);
+    }
+
+    @Override
+    public Address requestDtoToEntity(AddressWithCustomerDniDTO requestDto) {
+        return modelMapper.map(requestDto, Address.class);
     }
 
     @Override
     public Address requestDtoToEntity(AddressDTO requestDto) {
-        Address address = new Address();
-        modelMapper.map(requestDto, address);
-        return address;
+        return modelMapper.map(requestDto, Address.class);
     }
 }

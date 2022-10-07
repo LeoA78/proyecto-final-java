@@ -1,13 +1,11 @@
 package com.spring.app.mappers.impl;
 
-import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.request.CustomerDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.dtos.response.CustomerDetailResponseDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
-import com.spring.app.entities.CustomerDetail;
 import com.spring.app.mappers.ICustomerMapper;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -37,11 +35,9 @@ public class CustomerMapperImpl implements ICustomerMapper {
 
 
         List<AddressResponseDTO> addressResponseDTOList = new ArrayList<>();
-        AddressResponseDTO addressResponseDTO = new AddressResponseDTO();
 
-        for(Address address :customer.getAddressList()) {
-            modelMapper.map(address,addressResponseDTO);
-            addressResponseDTOList.add(addressResponseDTO);
+        for(Address address:customer.getAddressList()){
+            addressResponseDTOList.add(modelMapper.map(address, AddressResponseDTO.class));
         }
 
         return CustomerResponseDTO.builder()

@@ -1,6 +1,5 @@
 package com.spring.app.services.impl;
 
-import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.request.CustomerDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
 import com.spring.app.entities.Address;

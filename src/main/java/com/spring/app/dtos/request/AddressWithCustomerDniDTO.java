@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -13,10 +14,10 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ApiModel(
-        value = "AddressDTO",
+        value = "AddressWithCustomerDniDTO",
         description = "Represents the data needed to created Address"
 )
-public class AddressDTO implements Serializable {
+public class AddressWithCustomerDniDTO implements Serializable {
 
     @ApiModelProperty(position = 1, required = true, notes = "The street name is required.")
     @NotNull
@@ -45,4 +46,7 @@ public class AddressDTO implements Serializable {
     @NotNull
     private String country;
 
+    @ApiModelProperty(position = 8 , required = true, notes = "Customer DNI is required.")
+    @NotNull
+    private String customerDni;
 }
