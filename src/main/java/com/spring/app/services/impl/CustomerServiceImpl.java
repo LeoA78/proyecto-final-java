@@ -3,13 +3,16 @@ package com.spring.app.services.impl;
 import com.spring.app.dtos.request.CustomerDTO;
 import com.spring.app.dtos.request.CustomerUpdateDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
+import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.CustomerDetail;
+import com.spring.app.entities.Invoice;
 import com.spring.app.exceptions.BadRequestException;
 import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.mappers.ICustomerDetailMapper;
 import com.spring.app.mappers.ICustomerMapper;
+import com.spring.app.mappers.IInvoiceMapper;
 import com.spring.app.repositories.ICustomerRepository;
 import com.spring.app.services.ICustomerService;
 import lombok.AllArgsConstructor;
@@ -39,6 +42,9 @@ public class CustomerServiceImpl implements ICustomerService {
 
     @Autowired
     private IAddressMapper addressMapper;
+
+    @Autowired
+    private IInvoiceMapper invoiceMapper;
 
     /**
      * This method return all customers
@@ -168,6 +174,29 @@ public class CustomerServiceImpl implements ICustomerService {
         }
 
         customerRepository.delete(optionalCustomer.get());
+    }
+
+    @Override
+    public List<InvoiceResponseDTO> findAllInvoicesById(Long id){
+
+        List<InvoiceResponseDTO> invoicesList = new ArrayList<>();
+
+        if (id < 0) {
+            throw new BadRequestException("the id cannot be a negative number. Request ID:" + id);
+        }
+
+        Optional<Customer> optionalCustomer = customerRepository.findById(id);
+
+        if (optionalCustomer.isEmpty()) {
+            throw new IllegalStateException("Record with id " + id + " does not exist.");
+        }
+
+        for(Invoice invoice : optionalCustomer.get().getInvoiceList()){
+            invoicesList.add(invoiceMapper.entityToResponseDto(invoice));
+        }
+
+        return invoicesList;
+
     }
 
 }

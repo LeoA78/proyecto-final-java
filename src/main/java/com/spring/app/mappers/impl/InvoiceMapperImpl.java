@@ -1,6 +1,7 @@
 package com.spring.app.mappers.impl;
 
 import com.spring.app.dtos.request.InvoiceDTO;
+import com.spring.app.dtos.request.InvoiceUpdateDTO;
 import com.spring.app.dtos.response.*;
 import com.spring.app.entities.Invoice;
 import com.spring.app.mappers.ICustomerMapper;
@@ -20,6 +21,11 @@ public class InvoiceMapperImpl implements IInvoiceMapper {
 
     @Override
     public Invoice requestDtoToEntity(InvoiceDTO requestDto) {
+        return modelMapper.map(requestDto, Invoice.class);
+    }
+
+    @Override
+    public Invoice requestDtoToEntity(InvoiceUpdateDTO requestDto) {
         return modelMapper.map(requestDto, Invoice.class);
     }
 

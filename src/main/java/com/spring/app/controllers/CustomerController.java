@@ -4,6 +4,7 @@ package com.spring.app.controllers;
 import com.spring.app.dtos.request.CustomerDTO;
 import com.spring.app.dtos.request.CustomerUpdateDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
+import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.services.ICustomerService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -67,6 +68,31 @@ public class CustomerController {
 
 
         return new ResponseEntity<>(customerResponseDTO, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/invoices/{id}")
+    @ApiOperation(
+            value = "Retrieves all Customer Invoices",
+            httpMethod = "GET",
+            response = InvoiceResponseDTO[].class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,
+                    message = "Body content with basic information about customers",
+                    response = InvoiceResponseDTO[].class),
+            @ApiResponse(
+                    code = 204,
+                    message = "Body content is empty")
+    })
+    public ResponseEntity<List<InvoiceResponseDTO>> getCustomerInvoicesById(
+            @ApiParam(name = "id", required = true, value = "1", example = "1")
+            @PathVariable("id") Long id) {
+
+        List<InvoiceResponseDTO> customerInvoices = customerService.findAllInvoicesById(id);
+
+
+        return new ResponseEntity<>(customerInvoices, HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{id}")

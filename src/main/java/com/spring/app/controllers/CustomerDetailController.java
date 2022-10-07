@@ -66,51 +66,6 @@ public class CustomerDetailController {
         return new ResponseEntity<>(customerDetailResponseDTO,HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    @ApiOperation(
-            value = "Retrieves all Lists Customer Details",
-            httpMethod = "DELETE"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about customer detail",
-                    response = CustomerDetailResponseDTO[].class),
-            @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
-    })
-    public ResponseEntity<Void> deleteCustomerDetailById(
-            @ApiParam(name = "id", required = true, value = "id", example = "1")
-            @PathVariable("id") Long id) {
-
-        customerDetailService.deleteCustomerDetailById(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-
-    @PostMapping(value = "/add", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(
-            value = "Retrieves data associated to List Master by Id",
-            httpMethod = "POST",
-            response = CustomerDetailResponseDTO.class
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    code = 201,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
-            @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
-    })
-    public ResponseEntity<CustomerDetailResponseDTO> addCustomerDetail(
-            @ApiParam(name = "customerDetail", required = true, value = "Customer Detail")
-            @RequestBody CustomerDetailDTO customerDetail) {
-
-        return new ResponseEntity<>(customerDetailService.addCustomerDetail(customerDetail), HttpStatus.CREATED);
-    }
-
     @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
             value = "Retrieves data associated to List Master by Id",

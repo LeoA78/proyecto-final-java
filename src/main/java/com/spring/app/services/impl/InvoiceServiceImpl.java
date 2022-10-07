@@ -1,6 +1,7 @@
 package com.spring.app.services.impl;
 
 import com.spring.app.dtos.request.InvoiceDTO;
+import com.spring.app.dtos.request.InvoiceUpdateDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.Invoice;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -61,20 +63,16 @@ public class InvoiceServiceImpl implements IInvoiceService {
     public InvoiceResponseDTO findInvoiceById(Long id) {
 
         if (id < 0) {
-            throw new BadRequestException("El id no puede ser un número negativo.");
+            throw new BadRequestException("the id cannot be a negative number. Request ID:" + id);
         }
-
-        InvoiceResponseDTO fullInvoiceResponseDTO;
 
         Optional<Invoice> optionalInvoice = invoiceRepository.findById(id);
 
         if (optionalInvoice.isEmpty()) {
-            throw new IllegalStateException("El registro con el id " + id + " no existe.");
+            throw new IllegalStateException("Record with id " + id + " does not exist.");
         }
 
-        fullInvoiceResponseDTO = invoiceMapper.entityToResponseDto(optionalInvoice.get());
-
-        return fullInvoiceResponseDTO;
+        return invoiceMapper.entityToResponseDto(optionalInvoice.get());
     }
 
     /**
@@ -114,20 +112,31 @@ public class InvoiceServiceImpl implements IInvoiceService {
      * @return InvoiceResponseDTO
      */
     @Override
-    public InvoiceResponseDTO updateInvoice(Long id, InvoiceDTO invoiceDTO) {
+    public InvoiceResponseDTO updateInvoice(Long id, InvoiceUpdateDTO invoiceDTO) {
+
+        if(invoiceDTO.getTotal() <= 0 ){
+            throw new BadRequestException("Total cannot be zero or negative");
+        }
+
+        //AGREGAR TIPOS DE FACTURA
+
+        if(Objects.equals(invoiceDTO.getDescription(), "")){
+            throw new BadRequestException("Description cannot be empty");
+        }
 
         Optional<Invoice> optionalEntity = invoiceRepository.findById(id);
 
         if (optionalEntity.isEmpty()) {
-            throw new RuntimeException("Error no existe el id de persona buscado");
+            throw new BadRequestException("Invoice to update not found");
         }
 
-        Invoice invoice = invoiceMapper.requestDtoToEntity(invoiceDTO);
+        Invoice invoiceToUpdate = invoiceMapper.requestDtoToEntity(invoiceDTO);
 
-        invoice.setIdInvoice(id);
-        invoice.setCreatedDate(optionalEntity.get().getCreatedDate());
+        invoiceToUpdate.setIdInvoice(id);
+        invoiceToUpdate.setCreatedDate(optionalEntity.get().getCreatedDate());
+        invoiceToUpdate.setCustomer(optionalEntity.get().getCustomer());
 
-        Invoice updatedInvoice = invoiceRepository.save(invoice);
+        Invoice updatedInvoice = invoiceRepository.save(invoiceToUpdate);
 
         return invoiceMapper.entityToResponseDto(updatedInvoice);
     }
@@ -139,14 +148,20 @@ public class InvoiceServiceImpl implements IInvoiceService {
      */
     @Override
     public void deleteInvoiceById(Long id) {
+
+        if(id <= 0 ){
+            throw new BadRequestException("Id cannot be zero or negative");
+        }
+
         Optional<Invoice> optionalInvoice = invoiceRepository.findById(id);
 
+
+
         if (optionalInvoice.isEmpty()) {
-            throw new RuntimeException("Error no existe el id buscado");
+            throw new RuntimeException("Record with id " + id + " does not exist.");
         }
 
         invoiceRepository.delete(optionalInvoice.get());
-        System.out.println("La factura con el " + id + " fue eliminada correctamente.");
 
     }
 

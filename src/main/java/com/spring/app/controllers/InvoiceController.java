@@ -1,6 +1,7 @@
 package com.spring.app.controllers;
 
 import com.spring.app.dtos.request.InvoiceDTO;
+import com.spring.app.dtos.request.InvoiceUpdateDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.services.IInvoiceService;
 import io.swagger.annotations.*;
@@ -128,7 +129,7 @@ public class InvoiceController {
     })
     public ResponseEntity<InvoiceResponseDTO> updateInvoice(
             @ApiParam(name = "invoice", required = true, value = "Invoice")
-            @RequestBody InvoiceDTO invoice,
+            @RequestBody InvoiceUpdateDTO invoice,
             @ApiParam(name = "id", required = true, value = "Id", example = "1")
             @PathVariable("id") Long id){
 

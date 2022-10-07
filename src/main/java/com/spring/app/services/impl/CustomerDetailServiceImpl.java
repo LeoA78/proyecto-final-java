@@ -55,41 +55,18 @@ public class CustomerDetailServiceImpl implements ICustomerDetailService {
     public CustomerDetailResponseDTO findCustomerDetailById(Long id) {
 
         if (id < 0) {
-            throw new BadRequestException("El id no puede ser un número negativo.");
+            throw new BadRequestException("the id cannot be a negative number. Request ID:" + id);
         }
-
-        CustomerDetailResponseDTO customerDetailResponseDTO;
 
         Optional<CustomerDetail> optionalCustomerDetail = customerDetailRepository.findById(id);
 
         if (optionalCustomerDetail.isEmpty()) {
-            throw new IllegalStateException("El registro con el id " + id + " no existe.");
+            throw new IllegalStateException("Record with id " + id + " does not exist.");
         }
 
-        customerDetailResponseDTO = customerDetailMapper.entityToResponseDto(optionalCustomerDetail.get());
-
-        return customerDetailResponseDTO;
+        return customerDetailMapper.entityToResponseDto(optionalCustomerDetail.get());
     }
 
-    /**
-     * This method adds a customer Detail to the database and returns the added customer Detail.
-     *
-     * @param customerDetailDTO CustomerDetail Request DTO
-     * @return CustomerDetailResponseDTO
-     */
-    @Override
-    public CustomerDetailResponseDTO addCustomerDetail(CustomerDetailDTO customerDetailDTO) {
-        CustomerDetailResponseDTO customerDetailResponseDTO;
-
-        CustomerDetail customerDetailEntity = customerDetailMapper.requestDtoToEntity(customerDetailDTO);
-
-
-        CustomerDetail savedCustomerDetail = customerDetailRepository.save(customerDetailEntity);
-
-        customerDetailResponseDTO = customerDetailMapper.entityToResponseDto(savedCustomerDetail);
-
-        return customerDetailResponseDTO;
-    }
 
     /**
      * This method update a customer Detail in to the database and returns the modified customer Detail.
@@ -104,36 +81,18 @@ public class CustomerDetailServiceImpl implements ICustomerDetailService {
         Optional<CustomerDetail> optionalEntity = customerDetailRepository.findById(id);
 
         if (optionalEntity.isEmpty()) {
-            throw new RuntimeException("Error no existe el id de persona buscado");
+            throw new RuntimeException("Record with id " + id + " does not exist.");
         }
 
+        CustomerDetail customerDetailToUpdate = customerDetailMapper.requestDtoToEntity(customerDetailDTO);
 
-        CustomerDetail customerDetail = customerDetailMapper.requestDtoToEntity(customerDetailDTO);
+        customerDetailToUpdate.setIdCustomerDetail(id);
 
-        customerDetail.setIdCustomerDetail(id);
-
-        CustomerDetail updatedCustomerDetail = customerDetailRepository.save(customerDetail);
+        CustomerDetail updatedCustomerDetail = customerDetailRepository.save(customerDetailToUpdate);
 
         return customerDetailMapper.entityToResponseDto(updatedCustomerDetail);
     }
 
-    /**
-     * This method delete a customerDetail in to the database.
-     *
-     * @param id CustomerDetail id
-     */
-    @Override
-    public void deleteCustomerDetailById(Long id) {
-        Optional<CustomerDetail> optionalCustomerDetail = customerDetailRepository.findById(id);
-
-        if (optionalCustomerDetail.isEmpty()) {
-            throw new RuntimeException("Error no existe el id buscado");
-        }
-
-        customerDetailRepository.delete(optionalCustomerDetail.get());
-        System.out.println("El detalle de cliente con el " + id + " fue eliminada correctamente.");
-
-    }
 
 }
 
