@@ -18,7 +18,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -45,6 +44,10 @@ public class AddressServiceImpl implements IAddressService {
 
         List<Address> addressList = addressRepository.findAll();
 
+        if(addressList.isEmpty()){
+            throw new BadRequestException("There are no records related to addresses");
+        }
+
         for (Address address : addressList) {
             addressResponseDTOS.add(addressMapper.entityToResponseDto(address));
         }
@@ -61,20 +64,17 @@ public class AddressServiceImpl implements IAddressService {
     public AddressResponseDTO findAddressById(Long id){
 
         if(id < 0){
-            throw new BadRequestException("El id no puede ser un número negativo.");
+            throw new BadRequestException("the id cannot be a negative number. Request ID:" + id);
         }
 
-        AddressResponseDTO addressResponseDTO;
 
         Optional<Address> optionalAddress = addressRepository.findById(id);
 
         if(optionalAddress.isEmpty()){
-            throw new IllegalStateException("El registro con el id " + id + " no existe.");
+            throw new IllegalStateException("Record with id " + id + " does not exist.");
         }
 
-        addressResponseDTO = addressMapper.entityToResponseDto(optionalAddress.get());
-
-        return addressResponseDTO;
+        return addressMapper.entityToResponseDto(optionalAddress.get());
     }
 
     /**
@@ -104,24 +104,16 @@ public class AddressServiceImpl implements IAddressService {
                 addressDTO.getPostCode(),
                 addressDTO.getCity(),
                 addressDTO.getProvince(),
-                addressDTO.getCountry()
+                addressDTO.getCountry(),
+                customerByDni
         );
+        System.out.println("Address repeated" + repeatedAddress);
 
         if(repeatedAddress.isPresent()) {
-
-            //Si el cliente ya tiene esa dirección no permitirle repetirla
-            for (Address addressCustomer : customerByDni.getAddressList()) {
-                if(Objects.equals(addressCustomer.getIdAddress(), repeatedAddress.get().getIdAddress())){
-                    throw new BadRequestException("The address is already associated with the customer");
-                }
-            }
-
-            repeatedAddress.get().getCustomerList().add(customerByDni);
-            customerByDni.getAddressList().add(repeatedAddress.get());
-            createdAddress = addressRepository.save(repeatedAddress.get());
-        } else {
+            throw new BadRequestException("The Address to add already exist");
+        }else{
             Address addressToCreate = addressMapper.requestDtoToEntity(addressDTO);
-            addressToCreate.getCustomerList().add(customerByDni);
+            addressToCreate.setCustomer(customerByDni);
             customerByDni.getAddressList().add(addressToCreate);
             createdAddress = addressRepository.save(addressToCreate);
         }
@@ -145,9 +137,6 @@ public class AddressServiceImpl implements IAddressService {
             throw new RuntimeException("Address to update not found");
         }
 
-        if(optionalAddress.get().getCustomerList().size() > 1){
-            throw new BadRequestException("The address cannot be modified, it also belongs to another customer");
-        }
 
         Optional<Address> addressToUpdate = addressRepository.repeatedAddressValidation(
                 addressDTO.getStreet(),
@@ -156,16 +145,18 @@ public class AddressServiceImpl implements IAddressService {
                 addressDTO.getPostCode(),
                 addressDTO.getCity(),
                 addressDTO.getProvince(),
-                addressDTO.getCountry()
+                addressDTO.getCountry(),
+                optionalAddress.get().getCustomer()
         );
 
         if(addressToUpdate.isPresent()){
-            throw new RuntimeException("Existing Address");
+            throw new RuntimeException("The Address to add already exist");
         }
 
         Address address = addressMapper.requestDtoToEntity(addressDTO);
 
         address.setIdAddress(id);
+        address.setCustomer(optionalAddress.get().getCustomer()); //Le seteo el cliente a la dirección
 
         Address updatedAddress = addressRepository.save(address);
 
@@ -181,12 +172,10 @@ public class AddressServiceImpl implements IAddressService {
         Optional<Address> optionalAddress = addressRepository.findById(id);
 
         if(optionalAddress.isEmpty()) {
-            throw new RuntimeException("Error no existe el id buscado");
+            throw new RuntimeException("Address to delete not found");
         }
 
         addressRepository.delete(optionalAddress.get());
-        System.out.println("La dirección con el " + id + " fue eliminada correctamente.");
-
     }
 
 }

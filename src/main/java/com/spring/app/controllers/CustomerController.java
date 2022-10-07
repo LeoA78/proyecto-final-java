@@ -2,6 +2,7 @@ package com.spring.app.controllers;
 
 
 import com.spring.app.dtos.request.CustomerDTO;
+import com.spring.app.dtos.request.CustomerUpdateDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
 import com.spring.app.services.ICustomerService;
 import io.swagger.annotations.*;
@@ -130,7 +131,7 @@ public class CustomerController {
     })
     public ResponseEntity<CustomerResponseDTO> updateCustomer(
             @ApiParam(name = "customer", required = true, value = "Customer")
-            @RequestBody CustomerDTO customer,
+            @RequestBody CustomerUpdateDTO customer,
             @ApiParam(name = "id", required = true, value = "Id", example = "1")
             @PathVariable("id") Long id) {
 

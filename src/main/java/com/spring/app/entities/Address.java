@@ -49,7 +49,8 @@ public class Address implements Serializable {
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 
-    @ManyToMany(mappedBy = "addressList")
-    private List<Customer> customerList = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
 }

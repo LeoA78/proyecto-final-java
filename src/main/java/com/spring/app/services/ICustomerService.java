@@ -1,6 +1,7 @@
 package com.spring.app.services;
 
 import com.spring.app.dtos.request.CustomerDTO;
+import com.spring.app.dtos.request.CustomerUpdateDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface ICustomerService {
 
     CustomerResponseDTO addCustomer(CustomerDTO customerDTO);
 
-    CustomerResponseDTO updateCustomer(Long id, CustomerDTO customerDTO);
+    CustomerResponseDTO updateCustomer(Long id, CustomerUpdateDTO customerDTO);
 
     void deleteCustomerById(Long id);
 }

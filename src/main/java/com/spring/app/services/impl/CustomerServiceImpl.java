@@ -1,6 +1,7 @@
 package com.spring.app.services.impl;
 
 import com.spring.app.dtos.request.CustomerDTO;
+import com.spring.app.dtos.request.CustomerUpdateDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
@@ -9,7 +10,6 @@ import com.spring.app.exceptions.BadRequestException;
 import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.mappers.ICustomerDetailMapper;
 import com.spring.app.mappers.ICustomerMapper;
-import com.spring.app.repositories.IAddressRepository;
 import com.spring.app.repositories.ICustomerRepository;
 import com.spring.app.services.ICustomerService;
 import lombok.AllArgsConstructor;
@@ -40,9 +40,6 @@ public class CustomerServiceImpl implements ICustomerService {
     @Autowired
     private IAddressMapper addressMapper;
 
-    @Autowired
-    private IAddressRepository addressRepository;
-
     /**
      * This method return all customers
      *
@@ -71,20 +68,16 @@ public class CustomerServiceImpl implements ICustomerService {
     public CustomerResponseDTO findCustomerById(Long id) {
 
         if (id < 0) {
-            throw new BadRequestException("El id no puede ser un número negativo.");
+            throw new BadRequestException("the id cannot be a negative number. Request ID:" + id);
         }
-
-        CustomerResponseDTO customerResponseDTO;
 
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
 
         if (optionalCustomer.isEmpty()) {
-            throw new IllegalStateException("El registro con el id " + id + " no existe.");
+            throw new IllegalStateException("Record with id " + id + " does not exist.");
         }
 
-        customerResponseDTO = customerMapper.entityToResponseDto(optionalCustomer.get());
-
-        return customerResponseDTO;
+        return customerMapper.entityToResponseDto(optionalCustomer.get());
     }
 
 
@@ -115,21 +108,9 @@ public class CustomerServiceImpl implements ICustomerService {
         customerToCreate.setCreatedDate(LocalDate.now());
         customerToCreate.setCustomerDetail(customerDetail);
 
-        Optional<Address> repeatedAddress = addressRepository.repeatedAddressValidation(
-                address.getStreet(),
-                address.getNumber(),
-                address.getApartment(),
-                address.getPostCode(),
-                address.getCity(),
-                address.getProvince(),
-                address.getCountry()
-        );
+        customerToCreate.addAddress(address);
 
-        if(repeatedAddress.isPresent()){
-            customerToCreate.addAddress(repeatedAddress.get());
-        }else{
-            customerToCreate.addAddress(address);
-        }
+        address.setCustomer(customerToCreate);
 
         Customer customerCreated = customerRepository.save(customerToCreate);
 
@@ -144,16 +125,17 @@ public class CustomerServiceImpl implements ICustomerService {
      * @return CustomerResponseDTO
      */
     @Override
-    public CustomerResponseDTO updateCustomer(Long id, CustomerDTO customerDTO) {
+    public CustomerResponseDTO updateCustomer(Long id, CustomerUpdateDTO customerDTO) {
 
         Optional<Customer> optionalEntity = customerRepository.findById(id);
 
         if (optionalEntity.isEmpty()) {
-            throw new RuntimeException("Error no existe el id de persona buscado");
+            throw new RuntimeException("Customer to update not found");
         }
 
         Customer customerByDni = customerRepository.findByDni(customerDTO.getDni());
 
+        //Si los DNI son distintos y se encontró un cliente con el DNI nuevo
         if (!Objects.equals(customerDTO.getDni(), optionalEntity.get().getDni()) && customerByDni != null) {
             throw new BadRequestException("the client with the DNI entered already exists");
         }
@@ -163,6 +145,9 @@ public class CustomerServiceImpl implements ICustomerService {
 
         customer.setIdCustomer(id);
         customer.setCreatedDate(optionalEntity.get().getCreatedDate());
+        customer.setCustomerDetail(optionalEntity.get().getCustomerDetail());
+        customer.setAddressList(optionalEntity.get().getAddressList());
+
 
         Customer updatedCustomer = customerRepository.save(customer);
 
@@ -179,12 +164,10 @@ public class CustomerServiceImpl implements ICustomerService {
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
 
         if (optionalCustomer.isEmpty()) {
-            throw new RuntimeException("Error no existe el id buscado");
+            throw new RuntimeException("Customer to delete not found");
         }
 
         customerRepository.delete(optionalCustomer.get());
-        System.out.println("El cliente con el " + id + " fue eliminada correctamente.");
-
     }
 
 }

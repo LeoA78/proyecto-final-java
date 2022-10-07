@@ -51,11 +51,7 @@ public class Customer implements Serializable {
     @Column(name = "deleted", nullable = false)
     private boolean deleted = false;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "tbl_customers_addresses",
-        joinColumns = @JoinColumn(name = "customer_id"),
-        inverseJoinColumns = @JoinColumn(name = "address_id")
-    )
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<Address> addressList = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer")

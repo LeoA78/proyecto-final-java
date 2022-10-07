@@ -1,6 +1,7 @@
 package com.spring.app.mappers.impl;
 
 import com.spring.app.dtos.request.CustomerDTO;
+import com.spring.app.dtos.request.CustomerUpdateDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.dtos.response.CustomerDetailResponseDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
@@ -23,6 +24,13 @@ public class CustomerMapperImpl implements ICustomerMapper {
 
     @Override
     public Customer requestDtoToEntity(CustomerDTO requestDto) {
+        Customer customer = new Customer();
+        modelMapper.map(requestDto, customer);
+        return customer;
+    }
+
+    @Override
+    public Customer requestDtoToEntity(CustomerUpdateDTO requestDto) {
         Customer customer = new Customer();
         modelMapper.map(requestDto, customer);
         return customer;
