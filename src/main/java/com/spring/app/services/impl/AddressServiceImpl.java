@@ -1,5 +1,6 @@
 package com.spring.app.services.impl;
 
+import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.request.AddressWithCustomerDniDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.entities.Address;
@@ -95,6 +96,7 @@ public class AddressServiceImpl implements IAddressService {
             throw new BadRequestException("Cannot create an address without an associated customer");
         }
 
+
         Optional<Address> repeatedAddress = addressRepository.repeatedAddressValidation(
                 addressDTO.getStreet(),
                 addressDTO.getNumber(),
@@ -134,12 +136,31 @@ public class AddressServiceImpl implements IAddressService {
      * @return AddressResponseDTO
      */
     @Override
-    public AddressResponseDTO updateAddress(Long id, AddressWithCustomerDniDTO addressDTO){
+    public AddressResponseDTO updateAddress(Long id, AddressDTO addressDTO){
 
-        Optional<Address> optionalEntity = addressRepository.findById(id);
+        Optional<Address> optionalAddress = addressRepository.findById(id);
 
-        if(optionalEntity.isEmpty()){
-            throw new RuntimeException("Error no existe el id de persona buscado");
+
+        if(optionalAddress.isEmpty()){
+            throw new RuntimeException("Address to update not found");
+        }
+
+        if(optionalAddress.get().getCustomerList().size() > 1){
+            throw new BadRequestException("The address cannot be modified, it also belongs to another customer");
+        }
+
+        Optional<Address> addressToUpdate = addressRepository.repeatedAddressValidation(
+                addressDTO.getStreet(),
+                addressDTO.getNumber(),
+                addressDTO.getApartment(),
+                addressDTO.getPostCode(),
+                addressDTO.getCity(),
+                addressDTO.getProvince(),
+                addressDTO.getCountry()
+        );
+
+        if(addressToUpdate.isPresent()){
+            throw new RuntimeException("Existing Address");
         }
 
         Address address = addressMapper.requestDtoToEntity(addressDTO);

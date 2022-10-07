@@ -1,5 +1,6 @@
 package com.spring.app.controllers;
 
+import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.request.AddressWithCustomerDniDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.services.IAddressService;
@@ -129,7 +130,7 @@ public class AddressController {
     })
     public ResponseEntity<AddressResponseDTO> updateAddress(
             @ApiParam(name = "address", required = true, value = "Address")
-            @RequestBody AddressWithCustomerDniDTO address,
+            @RequestBody AddressDTO address,
             @ApiParam(name = "id", required = true, value = "Id", example = "1")
             @PathVariable("id") Long id){
 

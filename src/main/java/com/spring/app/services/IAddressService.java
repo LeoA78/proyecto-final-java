@@ -1,5 +1,6 @@
 package com.spring.app.services;
 
+import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.request.AddressWithCustomerDniDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
 
@@ -13,7 +14,7 @@ public interface IAddressService {
     AddressResponseDTO findAddressById(Long id);
 
     AddressResponseDTO addAddress(AddressWithCustomerDniDTO addressDTO);
-    AddressResponseDTO updateAddress(Long id, AddressWithCustomerDniDTO addressDTO);
+    AddressResponseDTO updateAddress(Long id, AddressDTO addressDTO);
 
     void deleteAddressById(Long id);
 }
