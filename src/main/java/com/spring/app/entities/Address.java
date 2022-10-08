@@ -7,8 +7,6 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor

@@ -1,6 +1,5 @@
 package com.spring.app.entities;
 
-import ch.qos.logback.classic.db.names.ColumnName;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;

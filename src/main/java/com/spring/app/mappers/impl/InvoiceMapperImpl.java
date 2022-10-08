@@ -42,4 +42,10 @@ public class InvoiceMapperImpl implements IInvoiceMapper {
                 .customer(customerResponseDTO)
                 .build();
     }
+
+    @Override
+    public InvoiceWithoutCustomerResponseDTO entityToInvoiceWithoutCustomerResponseDto(Invoice invoice) {
+
+        return modelMapper.map(invoice, InvoiceWithoutCustomerResponseDTO.class);
+    }
 }

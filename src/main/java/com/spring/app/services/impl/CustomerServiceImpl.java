@@ -3,7 +3,7 @@ package com.spring.app.services.impl;
 import com.spring.app.dtos.request.CustomerDTO;
 import com.spring.app.dtos.request.CustomerUpdateDTO;
 import com.spring.app.dtos.response.CustomerResponseDTO;
-import com.spring.app.dtos.response.InvoiceResponseDTO;
+import com.spring.app.dtos.response.InvoiceWithoutCustomerResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.CustomerDetail;
@@ -173,13 +173,17 @@ public class CustomerServiceImpl implements ICustomerService {
             throw new RuntimeException("Customer to delete not found");
         }
 
+        if (!optionalCustomer.get().getInvoiceList().isEmpty()) {
+            throw new RuntimeException("Customer can not be deleted if it has invoices");
+        }
+
         customerRepository.delete(optionalCustomer.get());
     }
 
     @Override
-    public List<InvoiceResponseDTO> findAllInvoicesById(Long id){
+    public List<InvoiceWithoutCustomerResponseDTO> findAllInvoicesById(Long id){
 
-        List<InvoiceResponseDTO> invoicesList = new ArrayList<>();
+        List<InvoiceWithoutCustomerResponseDTO> invoicesList = new ArrayList<>();
 
         if (id < 0) {
             throw new BadRequestException("the id cannot be a negative number. Request ID:" + id);
@@ -192,7 +196,7 @@ public class CustomerServiceImpl implements ICustomerService {
         }
 
         for(Invoice invoice : optionalCustomer.get().getInvoiceList()){
-            invoicesList.add(invoiceMapper.entityToResponseDto(invoice));
+            invoicesList.add(invoiceMapper.entityToInvoiceWithoutCustomerResponseDto(invoice));
         }
 
         return invoicesList;
