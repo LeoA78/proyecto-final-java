@@ -49,7 +49,7 @@ public class ControllerAdvice {
         ErrorResponseDTO error = ErrorResponseDTO.builder()
                 .typeException(ex.getClass()
                         .getSimpleName())
-                .code(400)
+                .code(HttpStatus.BAD_REQUEST.value())
                 .message("Datos ingresados inválidos")
                 .path(request.getRequestURI())
                 .build();

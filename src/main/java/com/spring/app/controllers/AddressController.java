@@ -51,7 +51,7 @@ public class AddressController {
     )
     @ApiResponses(value = {
             @ApiResponse(code = 200,
-                    message = "Body content with basic information about addresss",
+                    message = "Body content with basic information about addresses",
                     response = AddressResponseDTO.class),
             @ApiResponse(
                     code = 204,
