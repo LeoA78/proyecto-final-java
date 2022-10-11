@@ -29,12 +29,13 @@ public class AddressController {
             response = AddressResponseDTO[].class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about address",
+            @ApiResponse(
+                    code = 200,
+                    message = "Body content with information about an address list",
                     response = AddressResponseDTO[].class),
             @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    code = 404,
+                    message = "Information about an address list not found")
     })
     public ResponseEntity<List<AddressResponseDTO>> getAllAddresses() {
 
@@ -45,17 +46,18 @@ public class AddressController {
 
     @GetMapping(value = "/{id}")
     @ApiOperation(
-            value = "Retrieves all Lists Addresss",
+            value = "Retrieves all Lists Addresses",
             httpMethod = "GET",
             response = AddressResponseDTO.class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about addresses",
+            @ApiResponse(
+                    code = 200,
+                    message = "Body content with information about an address",
                     response = AddressResponseDTO.class),
             @ApiResponse(
-                    code = 204,
-                    message = "Body content is empty")
+                    code = 404,
+                    message = "Information about an address list not found")
     })
     public ResponseEntity<AddressResponseDTO> getAddressById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
@@ -67,18 +69,70 @@ public class AddressController {
         return new ResponseEntity<>(addressResponseDTO,HttpStatus.OK);
     }
 
+    @PostMapping(value = "/add", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(
+            value = "Retrieves data associated to List Master by Id",
+            httpMethod = "POST",
+            response = AddressResponseDTO.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 201,
+                    message = "Body content with information about a successfully created address",
+                    response = AddressResponseDTO.class),
+            @ApiResponse(
+                    code = 400,
+                    message = "Information about an error creating a new address")
+    })
+    public ResponseEntity<AddressResponseDTO> addAddress(
+            @ApiParam(name = "address", required = true, value = "Address")
+            @RequestBody AddressWithCustomerDniDTO address) {
+
+        //return ResponseEntity.ok(addressService.addAddress(address));
+        return new ResponseEntity<>(addressService.addAddress(address), HttpStatus.CREATED);
+    }
+
+
+    @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @ApiOperation(
+            value = "Retrieves data associated to List Master by Id",
+            httpMethod = "PUT",
+            response = AddressResponseDTO.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 201,
+                    message = "Body content with information about a successfully updated address",
+                    response = AddressResponseDTO.class),
+            @ApiResponse(
+                    code = 400,
+                    message = "Information about an error updating a new address")
+    })
+    public ResponseEntity<AddressResponseDTO> updateAddress(
+            @ApiParam(name = "address", required = true, value = "Address")
+            @RequestBody AddressDTO address,
+            @ApiParam(name = "id", required = true, value = "Id", example = "1")
+            @PathVariable("id") Long id){
+
+        return new ResponseEntity<>(addressService.updateAddress(id,address), HttpStatus.CREATED);
+    }
+
+
     @DeleteMapping (value = "/delete/{id}")
     @ApiOperation(
-            value = "Retrieves all Lists Addresss",
+            value = "Retrieves all Lists Addresses",
             httpMethod = "DELETE"
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about addresss",
-                    response = AddressResponseDTO[].class),
+            @ApiResponse(
+                    code = 204,
+                    message = "Body content about a successfully deleted address"),
             @ApiResponse(
                     code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    message = "Information about an error deleting a existing address"),
+            @ApiResponse(
+                    code = 404,
+                    message = "Information about an address to delete not found")
     })
     public ResponseEntity<Void> deleteAddressById(
             @ApiParam(name = "id", required = true, value = "id", example = "1")
@@ -89,52 +143,5 @@ public class AddressController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
-    @PostMapping(value = "/add", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(
-            value = "Retrieves data associated to List Master by Id",
-            httpMethod = "POST",
-            response = AddressResponseDTO.class
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    code = 201,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
-            @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
-    })
-    public ResponseEntity<AddressResponseDTO> addAddress(
-            @ApiParam(name = "address", required = true, value = "Address")
-            @RequestBody AddressWithCustomerDniDTO address) {
-
-        //return ResponseEntity.ok(addressService.addAddress(address));
-        return new ResponseEntity<>(addressService.addAddress(address), HttpStatus.CREATED);
-    }
-
-    @PutMapping(value = "/update/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @ApiOperation(
-            value = "Retrieves data associated to List Master by Id",
-            httpMethod = "PUT",
-            response = AddressResponseDTO.class
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    code = 200,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
-            @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
-    })
-    public ResponseEntity<AddressResponseDTO> updateAddress(
-            @ApiParam(name = "address", required = true, value = "Address")
-            @RequestBody AddressDTO address,
-            @ApiParam(name = "id", required = true, value = "Id", example = "1")
-            @PathVariable("id") Long id){
-
-        return new ResponseEntity<>(addressService.updateAddress(id,address), HttpStatus.CREATED);
-    }
 
 }

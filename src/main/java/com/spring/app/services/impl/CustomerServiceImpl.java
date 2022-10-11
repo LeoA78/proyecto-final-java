@@ -203,4 +203,20 @@ public class CustomerServiceImpl implements ICustomerService {
 
     }
 
+
+    @Override
+    public CustomerResponseDTO findCustomerByDni(String dni) {
+        Customer customer = customerRepository.findByDni(dni);
+
+        if (customer == null) {
+            throw new BadRequestException("Customer with dni " + dni + " does not exist");
+        }
+
+        if (Objects.equals(dni, "")) {
+            throw new BadRequestException("Dni cannot be empty.");
+        }
+
+        return customerMapper.entityToResponseDto(customer);
+    }
+
 }

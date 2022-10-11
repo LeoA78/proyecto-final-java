@@ -11,8 +11,6 @@ public interface ICustomerService {
 
     List<CustomerResponseDTO> findAllCustomers();
 
-    CustomerResponseDTO findCustomerById(Long id);
-
     CustomerResponseDTO addCustomer(CustomerDTO customerDTO);
 
     CustomerResponseDTO updateCustomer(Long id, CustomerUpdateDTO customerDTO);
@@ -20,4 +18,8 @@ public interface ICustomerService {
     void deleteCustomerById(Long id);
 
     List<InvoiceWithoutCustomerResponseDTO> findAllInvoicesById(Long id);
+
+    CustomerResponseDTO findCustomerById(Long id);
+
+    CustomerResponseDTO findCustomerByDni(String dni);
 }

@@ -2,13 +2,15 @@ package com.spring.app.services.impl;
 
 import com.spring.app.dtos.request.InvoiceDTO;
 import com.spring.app.dtos.request.InvoiceUpdateDTO;
+import com.spring.app.dtos.response.CustomerResponseDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.Invoice;
 import com.spring.app.exceptions.BadRequestException;
+import com.spring.app.mappers.ICustomerMapper;
 import com.spring.app.mappers.IInvoiceMapper;
-import com.spring.app.repositories.ICustomerRepository;
 import com.spring.app.repositories.IInvoiceRepository;
+import com.spring.app.services.ICustomerService;
 import com.spring.app.services.IInvoiceService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,10 @@ public class InvoiceServiceImpl implements IInvoiceService {
     private IInvoiceMapper invoiceMapper;
 
     @Autowired
-    private ICustomerRepository customerRepository;
+    private ICustomerService customerService;
+
+    @Autowired
+    private ICustomerMapper customerMapper;
 
     /**
      * This method return all invoices
@@ -89,7 +94,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
             throw new BadRequestException("Total cannot be zero or negative");
         }
 
-        Customer customerByDni = customerRepository.findByDni(invoiceDTO.getCustomerDni());
+        CustomerResponseDTO customerResponse = customerService.findCustomerByDni(invoiceDTO.getCustomerDni());
+        Customer customerByDni = customerMapper.responseDtoToEntity(customerResponse);
 
         if(customerByDni == null){
             throw new BadRequestException("Customer doesn't exist");

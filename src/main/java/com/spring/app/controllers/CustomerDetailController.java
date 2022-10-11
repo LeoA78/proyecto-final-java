@@ -1,6 +1,7 @@
 package com.spring.app.controllers;
 
 import com.spring.app.dtos.request.CustomerDetailDTO;
+import com.spring.app.dtos.response.AddressResponseDTO;
 import com.spring.app.dtos.response.CustomerDetailResponseDTO;
 import com.spring.app.services.ICustomerDetailService;
 import io.swagger.annotations.*;
@@ -28,12 +29,13 @@ public class CustomerDetailController {
             response = CustomerDetailResponseDTO[].class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about customerDetail details",
-                    response = CustomerDetailResponseDTO[].class),
             @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    code = 200,
+                    message = "Body content with information about an customer detail list",
+                    response = AddressResponseDTO[].class),
+            @ApiResponse(
+                    code = 404,
+                    message = "Information about an customer detail list not found")
     })
     public ResponseEntity<List<CustomerDetailResponseDTO>> getAllCustomerDetails() {
 
@@ -49,12 +51,13 @@ public class CustomerDetailController {
             response = CustomerDetailResponseDTO.class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about customer detail",
+            @ApiResponse(
+                    code = 200,
+                    message = "Body content with information about an customer detail",
                     response = CustomerDetailResponseDTO.class),
             @ApiResponse(
-                    code = 204,
-                    message = "Body content is empty")
+                    code = 404,
+                    message = "Information about an customer detail list not found")
     })
     public ResponseEntity<CustomerDetailResponseDTO> getCustomerDetailById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
@@ -74,12 +77,12 @@ public class CustomerDetailController {
     )
     @ApiResponses(value = {
             @ApiResponse(
-                    code = 200,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
+                    code = 201,
+                    message = "Body content with information about a successfully updated customer detail",
+                    response = CustomerDetailResponseDTO.class),
             @ApiResponse(
                     code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    message = "Information about an error updating a new customer detail")
     })
     public ResponseEntity<CustomerDetailResponseDTO> updateCustomerDetail(
             @ApiParam(name = "customerDetail", required = true, value = "Customer Detail")

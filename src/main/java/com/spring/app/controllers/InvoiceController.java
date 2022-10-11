@@ -29,12 +29,13 @@ public class InvoiceController {
             response = InvoiceResponseDTO[].class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about invoices",
+            @ApiResponse(
+                    code = 200,
+                    message = "Body content with information about an invoice list",
                     response = InvoiceResponseDTO[].class),
             @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    code = 404,
+                    message = "Information about an invoice list not found")
     })
     public ResponseEntity<List<InvoiceResponseDTO>> getAllInvoices() {
 
@@ -50,12 +51,13 @@ public class InvoiceController {
             response = InvoiceResponseDTO.class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about invoices",
+            @ApiResponse(
+                    code = 200,
+                    message = "Body content with information about an invoice",
                     response = InvoiceResponseDTO.class),
             @ApiResponse(
-                    code = 204,
-                    message = "Body content is empty")
+                    code = 404,
+                    message = "Information about an invoice list not found")
     })
     public ResponseEntity<InvoiceResponseDTO> getInvoiceById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
@@ -73,12 +75,15 @@ public class InvoiceController {
             httpMethod = "DELETE"
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about invoices",
-                    response = InvoiceResponseDTO[].class),
+            @ApiResponse(
+                    code = 204,
+                    message = "Body content about a successfully deleted invoice"),
             @ApiResponse(
                     code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    message = "Information about an error deleting a existing invoice"),
+            @ApiResponse(
+                    code = 404,
+                    message = "Information about an invoice to delete not found")
     })
     public ResponseEntity<Void> deleteInvoiceById(
             @ApiParam(name = "id", required = true, value = "id", example = "1")
@@ -99,11 +104,11 @@ public class InvoiceController {
     @ApiResponses(value = {
             @ApiResponse(
                     code = 201,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
+                    message = "Body content with information about a successfully created invoice",
+                    response =InvoiceResponseDTO.class),
             @ApiResponse(
                     code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    message = "Information about an error creating a new invoice")
     })
     public ResponseEntity<InvoiceResponseDTO> addInvoice(
             @ApiParam(name = "invoice", required = true, value = "Invoice")
@@ -120,12 +125,12 @@ public class InvoiceController {
     )
     @ApiResponses(value = {
             @ApiResponse(
-                    code = 200,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
+                    code = 201,
+                    message = "Body content with information about a successfully updated invoice",
+                    response = InvoiceResponseDTO.class),
             @ApiResponse(
                     code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    message = "Information about an error updating a new invoice")
     })
     public ResponseEntity<InvoiceResponseDTO> updateInvoice(
             @ApiParam(name = "invoice", required = true, value = "Invoice")

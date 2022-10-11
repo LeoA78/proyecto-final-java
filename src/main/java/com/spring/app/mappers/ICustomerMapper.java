@@ -10,6 +10,8 @@ public interface ICustomerMapper {
 
     Customer requestDtoToEntity(CustomerUpdateDTO requestDto);
 
+    Customer responseDtoToEntity(CustomerResponseDTO responseDto);
+
     CustomerResponseDTO entityToResponseDto(Customer customer);
 
     Customer requestDtoToEntity(CustomerDTO requestDto);

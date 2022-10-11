@@ -32,12 +32,13 @@ public class CustomerController {
             response = CustomerResponseDTO[].class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about customers",
+            @ApiResponse(
+                    code = 200,
+                    message = "Body content with information about an customer list",
                     response = CustomerResponseDTO[].class),
             @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    code = 404,
+                    message = "Information about an customer list not found")
     })
     public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers() {
 
@@ -53,12 +54,13 @@ public class CustomerController {
             response = CustomerResponseDTO.class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about customers",
+            @ApiResponse(
+                    code = 200,
+                    message = "Body content with information about an customer",
                     response = CustomerResponseDTO.class),
             @ApiResponse(
-                    code = 204,
-                    message = "Body content is empty")
+                    code = 404,
+                    message = "Information about an customer list not found")
     })
     public ResponseEntity<CustomerResponseDTO> getCustomerById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
@@ -78,12 +80,13 @@ public class CustomerController {
             response = InvoiceWithoutCustomerResponseDTO[].class
     )
     @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about customers",
-                    response = InvoiceWithoutCustomerResponseDTO[].class),
             @ApiResponse(
-                    code = 204,
-                    message = "Body content is empty")
+                    code = 200,
+                    message = "Body content with information about an customer",
+                    response = InvoiceWithoutCustomerResponseDTO.class),
+            @ApiResponse(
+                    code = 404,
+                    message = "Information about an customer list not found")
     })
     public ResponseEntity<List<InvoiceWithoutCustomerResponseDTO>> getCustomerInvoicesById(
             @ApiParam(name = "id", required = true, value = "1", example = "1")
@@ -93,28 +96,6 @@ public class CustomerController {
 
 
         return new ResponseEntity<>(customerInvoices, HttpStatus.OK);
-    }
-
-    @DeleteMapping(value = "/delete/{id}")
-    @ApiOperation(
-            value = "Retrieves all Lists Customers",
-            httpMethod = "DELETE"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(code = 200,
-                    message = "Body content with basic information about customers",
-                    response = CustomerResponseDTO[].class),
-            @ApiResponse(
-                    code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
-    })
-    public ResponseEntity<Void> deleteCustomerById(
-            @ApiParam(name = "id", required = true, value = "id", example = "1")
-            @PathVariable("id") Long id) {
-
-        customerService.deleteCustomerById(id);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
@@ -127,11 +108,11 @@ public class CustomerController {
     @ApiResponses(value = {
             @ApiResponse(
                     code = 201,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
+                    message = "Body content with information about a successfully created customer",
+                    response = CustomerResponseDTO.class),
             @ApiResponse(
                     code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    message = "Information about an error creating a new customer")
     })
     public ResponseEntity<CustomerResponseDTO> addCustomerWithDetail(
             @ApiParam(name = "customer", required = true, value = "Customer")
@@ -148,12 +129,12 @@ public class CustomerController {
     )
     @ApiResponses(value = {
             @ApiResponse(
-                    code = 200,
-                    message = "Body content with basic information for this Lists Master by Id"
-            ),
+                    code = 201,
+                    message = "Body content with information about a successfully updated customer",
+                    response = CustomerResponseDTO.class),
             @ApiResponse(
                     code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data formats, etc.")
+                    message = "Information about an error updating a new customer")
     })
     public ResponseEntity<CustomerResponseDTO> updateCustomer(
             @ApiParam(name = "customer", required = true, value = "Customer")
@@ -163,5 +144,31 @@ public class CustomerController {
 
         return new ResponseEntity<>(customerService.updateCustomer(id, customer), HttpStatus.CREATED);
     }
+
+    @DeleteMapping(value = "/delete/{id}")
+    @ApiOperation(
+            value = "Retrieves all Lists Customers",
+            httpMethod = "DELETE"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 204,
+                    message = "Body content about a successfully deleted customer"),
+            @ApiResponse(
+                    code = 400,
+                    message = "Information about an error deleting a existing customer"),
+            @ApiResponse(
+                    code = 404,
+                    message = "Information about a customer to delete not found")
+    })
+    public ResponseEntity<Void> deleteCustomerById(
+            @ApiParam(name = "id", required = true, value = "id", example = "1")
+            @PathVariable("id") Long id) {
+
+        customerService.deleteCustomerById(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 
 }

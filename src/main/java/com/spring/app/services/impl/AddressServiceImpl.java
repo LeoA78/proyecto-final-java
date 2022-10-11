@@ -3,13 +3,16 @@ package com.spring.app.services.impl;
 import com.spring.app.dtos.request.AddressDTO;
 import com.spring.app.dtos.request.AddressWithCustomerDniDTO;
 import com.spring.app.dtos.response.AddressResponseDTO;
+import com.spring.app.dtos.response.CustomerResponseDTO;
 import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
 import com.spring.app.exceptions.BadRequestException;
 import com.spring.app.mappers.IAddressMapper;
+import com.spring.app.mappers.ICustomerMapper;
 import com.spring.app.repositories.IAddressRepository;
 import com.spring.app.repositories.ICustomerRepository;
 import com.spring.app.services.IAddressService;
+import com.spring.app.services.ICustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +35,10 @@ public class AddressServiceImpl implements IAddressService {
     private IAddressMapper addressMapper;
 
     @Autowired
-    private ICustomerRepository customerRepository;
+    private ICustomerService customerService;
+
+    @Autowired
+    private ICustomerMapper customerMapper;
 
     /**
      * This method return all addresses
@@ -89,8 +95,8 @@ public class AddressServiceImpl implements IAddressService {
         if (ObjectUtils.isEmpty(addressDTO)) {
             throw new BadRequestException("Empty data in the entered entity");
         }
-
-        Customer customerByDni = customerRepository.findByDni(addressDTO.getCustomerDni());
+        CustomerResponseDTO customerResponse = customerService.findCustomerByDni(addressDTO.getCustomerDni());
+        Customer customerByDni = customerMapper.responseDtoToEntity(customerResponse);
 
         if (customerByDni == null) {
             throw new BadRequestException("Cannot create an address without an associated customer");
