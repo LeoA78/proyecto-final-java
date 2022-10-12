@@ -1,4 +1,4 @@
-package com.spring.app.exceptions;
+package com.spring.app.exceptions.customsExceptions;
 
 import lombok.Data;
 

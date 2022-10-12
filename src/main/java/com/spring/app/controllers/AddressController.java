@@ -11,12 +11,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
-@Api(value = "Address Api", tags = {"Address Service"}) //Relacionado con Swagger
-@RestController //Para que spring sepa que es un controlador REST
-//Para que pueda ser accedido desde afuera de la api. Con controller solo podemos hacerlo de manera interna
+@Api(value = "Address Api", tags = {"Address Service"})
+@RestController
 @RequestMapping(value = "/address", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AddressController {
 
@@ -86,9 +86,8 @@ public class AddressController {
     })
     public ResponseEntity<AddressResponseDTO> addAddress(
             @ApiParam(name = "address", required = true, value = "Address")
-            @RequestBody AddressWithCustomerDniDTO address) {
+            @Valid @RequestBody AddressWithCustomerDniDTO address) {
 
-        //return ResponseEntity.ok(addressService.addAddress(address));
         return new ResponseEntity<>(addressService.addAddress(address), HttpStatus.CREATED);
     }
 
@@ -109,10 +108,11 @@ public class AddressController {
                     message = "Information about an error updating a new address")
     })
     public ResponseEntity<AddressResponseDTO> updateAddress(
-            @ApiParam(name = "address", required = true, value = "Address")
-            @RequestBody AddressDTO address,
             @ApiParam(name = "id", required = true, value = "Id", example = "1")
-            @PathVariable("id") Long id){
+            @PathVariable("id") Long id,
+            @ApiParam(name = "address", required = true, value = "Address")
+            @Valid @RequestBody AddressDTO address
+            ){
 
         return new ResponseEntity<>(addressService.updateAddress(id,address), HttpStatus.CREATED);
     }

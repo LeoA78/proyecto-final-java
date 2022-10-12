@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -29,6 +30,7 @@ public class CustomerUpdateDTO implements Serializable {
 
     @ApiModelProperty(position = 3, required = true, notes = "DNI is required.")
     @NotNull
+    @Pattern(regexp="^[0-9]{7,8}$",message="length must be 7 or 8 characters")
     private String dni;
 
     @ApiModelProperty(position = 4, required = true, notes = "Non negative value, Date of Birth is required.")

@@ -3,7 +3,7 @@ package com.spring.app.services.impl;
 import com.spring.app.dtos.request.CustomerDetailDTO;
 import com.spring.app.dtos.response.CustomerDetailResponseDTO;
 import com.spring.app.entities.CustomerDetail;
-import com.spring.app.exceptions.BadRequestException;
+import com.spring.app.exceptions.customsExceptions.BadRequestException;
 import com.spring.app.mappers.ICustomerDetailMapper;
 import com.spring.app.repositories.ICustomerDetailRepository;
 import com.spring.app.services.ICustomerDetailService;

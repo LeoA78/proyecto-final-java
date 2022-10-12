@@ -6,6 +6,7 @@ import lombok.*;
 
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Data
@@ -48,5 +49,6 @@ public class AddressWithCustomerDniDTO implements Serializable {
 
     @ApiModelProperty(position = 8 , required = true, notes = "Customer DNI is required.")
     @NotNull
+    @Pattern(regexp="^[0-9]{7,8}$",message="length must be 7 or 8 characters")
     private String customerDni;
 }

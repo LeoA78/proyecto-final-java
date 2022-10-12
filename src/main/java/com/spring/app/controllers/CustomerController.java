@@ -137,10 +137,10 @@ public class CustomerController {
                     message = "Information about an error updating a new customer")
     })
     public ResponseEntity<CustomerResponseDTO> updateCustomer(
-            @ApiParam(name = "customer", required = true, value = "Customer")
-            @RequestBody CustomerUpdateDTO customer,
             @ApiParam(name = "id", required = true, value = "Id", example = "1")
-            @PathVariable("id") Long id) {
+            @PathVariable("id") Long id,
+            @ApiParam(name = "customer", required = true, value = "Customer")
+            @Valid @RequestBody CustomerUpdateDTO customer) {
 
         return new ResponseEntity<>(customerService.updateCustomer(id, customer), HttpStatus.CREATED);
     }

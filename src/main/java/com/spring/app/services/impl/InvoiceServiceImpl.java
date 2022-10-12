@@ -6,7 +6,7 @@ import com.spring.app.dtos.response.CustomerResponseDTO;
 import com.spring.app.dtos.response.InvoiceResponseDTO;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.Invoice;
-import com.spring.app.exceptions.BadRequestException;
+import com.spring.app.exceptions.customsExceptions.BadRequestException;
 import com.spring.app.mappers.ICustomerMapper;
 import com.spring.app.mappers.IInvoiceMapper;
 import com.spring.app.repositories.IInvoiceRepository;

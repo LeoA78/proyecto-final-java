@@ -6,6 +6,7 @@ import lombok.*;
 
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -22,6 +23,7 @@ public class InvoiceDTO implements Serializable{
 
     @ApiModelProperty(position = 1, required = true, notes = "Invoice Type is required.")
     @NotNull
+    @Pattern(regexp="^[aAbBcC$]",message="The type of invoice must be: A, B or C")
     private String invoiceType;
 
     @ApiModelProperty(position = 2, required = true, notes = "Description is required.")
@@ -38,6 +40,7 @@ public class InvoiceDTO implements Serializable{
 
     @ApiModelProperty(position = 5 , required = true, notes = "Non negative value, Customer DNI is required.")
     @NotNull
+    @Pattern(regexp="^[0-9]{7,8}$",message="length must be 7 or 8 characters")
     private String customerDni;
 
 }

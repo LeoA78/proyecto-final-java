@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -112,7 +113,7 @@ public class InvoiceController {
     })
     public ResponseEntity<InvoiceResponseDTO> addInvoice(
             @ApiParam(name = "invoice", required = true, value = "Invoice")
-            @RequestBody InvoiceDTO invoiceDTO) {
+            @Valid @RequestBody InvoiceDTO invoiceDTO) {
 
         return new ResponseEntity<>(invoiceService.addInvoice(invoiceDTO), HttpStatus.CREATED);
     }
@@ -134,7 +135,7 @@ public class InvoiceController {
     })
     public ResponseEntity<InvoiceResponseDTO> updateInvoice(
             @ApiParam(name = "invoice", required = true, value = "Invoice")
-            @RequestBody InvoiceUpdateDTO invoice,
+            @Valid @RequestBody InvoiceUpdateDTO invoice,
             @ApiParam(name = "id", required = true, value = "Id", example = "1")
             @PathVariable("id") Long id){
 

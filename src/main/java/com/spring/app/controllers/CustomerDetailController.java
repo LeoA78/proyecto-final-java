@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
@@ -86,7 +87,7 @@ public class CustomerDetailController {
     })
     public ResponseEntity<CustomerDetailResponseDTO> updateCustomerDetail(
             @ApiParam(name = "customerDetail", required = true, value = "Customer Detail")
-            @RequestBody CustomerDetailDTO customerDetail,
+            @Valid @RequestBody CustomerDetailDTO customerDetail,
             @ApiParam(name = "id", required = true, value = "Id", example = "1")
             @PathVariable("id") Long id){
 

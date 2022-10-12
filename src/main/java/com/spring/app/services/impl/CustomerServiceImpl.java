@@ -8,7 +8,7 @@ import com.spring.app.entities.Address;
 import com.spring.app.entities.Customer;
 import com.spring.app.entities.CustomerDetail;
 import com.spring.app.entities.Invoice;
-import com.spring.app.exceptions.BadRequestException;
+import com.spring.app.exceptions.customsExceptions.BadRequestException;
 import com.spring.app.mappers.IAddressMapper;
 import com.spring.app.mappers.ICustomerDetailMapper;
 import com.spring.app.mappers.ICustomerMapper;
